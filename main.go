@@ -40,7 +40,15 @@ func main() {
 		return
 	}
 
+	// get the input string in a Size x Size 2D slice. We use string and not char (rune) because later
+	// enhancement should also cover multi char per cell wordaments
 	matrix := parseMatrix(input)
-
 	fmt.Println(matrix)
+
+	w := NewWordament(Size)
+	w.LoadDictionary("english.0") // todo: add other dicts as well
+
+	solution := w.Solve(matrix)
+	fmt.Println(solution)
+
 }
