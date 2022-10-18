@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -10,6 +9,7 @@ import (
 
 type Wordament struct {
 	size int
+	trie *Trie
 }
 
 func NewWordament(sz int) *Wordament {
@@ -23,14 +23,13 @@ func (w *Wordament) LoadDictionary(path string) {
 	}
 	defer file.Close()
 
+	w.trie = NewTrie()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		// remove '
 		var word string
 		word = strings.ReplaceAll(scanner.Text(), "'", "")
-
-		// TODO: Replace following by a trie add word
-		fmt.Println(word)
+		w.trie.AddWord(word)
 	}
 
 	if err := scanner.Err(); err != nil {
