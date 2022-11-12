@@ -50,5 +50,4 @@ func main() {
 
 	solution := w.Solve(matrix)
 	fmt.Println(solution)
-
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -35,6 +36,19 @@ func (w *Wordament) LoadDictionary(path string) {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
+
+	word := "inscribe"
+	fmt.Println(word, w.trie.WordExists(word))
+
+	word = "inscribed"
+	fmt.Println(word, w.trie.WordExists(word))
+
+	word = "inscr"
+	fmt.Println(word, w.trie.WordExists(word))
+
+	word = "abhinaba"
+	fmt.Println(word, w.trie.WordExists(word))
+
 }
 
 func (w *Wordament) Solve(matrix [][]string) [][]int {
