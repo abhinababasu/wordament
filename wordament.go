@@ -37,20 +37,16 @@ func (w *Wordament) LoadDictionary(path string) {
 		log.Fatal(err)
 	}
 
-	word := "inscribe"
-	fmt.Println(word, w.trie.WordExists(word))
-
-	word = "inscribed"
-	fmt.Println(word, w.trie.WordExists(word))
-
-	word = "inscr"
-	fmt.Println(word, w.trie.WordExists(word))
-
-	word = "abhinaba"
-	fmt.Println(word, w.trie.WordExists(word))
-
 }
 
 func (w *Wordament) Solve(matrix [][]string) [][]int {
+	cells := []Cell{}
+	w.solvePos(2, 1, "", w.trie.root, cells)
 	return nil
+}
+
+func (w *Wordament) solvePos(r, c int, s string, trn *node, cells []Cell) {
+	cell := GetCell(r, c)
+	nc := cell.GetNeighbors(w.size-1, w.size-1)
+	fmt.Println("neighbors", nc)
 }

@@ -75,3 +75,16 @@ func getNode() *node {
 
 	return &n
 }
+
+func (n *node) GetChild(ch rune) *node {
+	if n == nil {
+		return nil
+	}
+
+	if np, ok := n.child[ch]; ok {
+		return np
+	} else {
+		return nil
+	}
+
+}

@@ -13,8 +13,6 @@ func parseMatrix(s string) [][]string {
 		matrix[i] = make([]string, Size)
 	}
 
-	fmt.Println(s)
-
 	k := 0
 	for i := 0; i < Size; i++ {
 		for j := 0; j < Size; j++ {
@@ -43,7 +41,16 @@ func main() {
 	// get the input string in a Size x Size 2D slice. We use string and not char (rune) because later
 	// enhancement should also cover multi char per cell wordaments
 	matrix := parseMatrix(input)
-	fmt.Println(matrix)
+
+	// Print the matrix
+	fmt.Println("Input:")
+	for _, ros := range matrix {
+		for _, cos := range ros {
+			fmt.Print(cos, " ")
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 
 	w := NewWordament(Size)
 	w.LoadDictionary("english.0") // todo: add other dicts as well
