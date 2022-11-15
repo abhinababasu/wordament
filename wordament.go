@@ -11,7 +11,7 @@ type Wordament struct {
 	size   int
 	trie   *Trie
 	matrix [][]rune
-	result []string
+	result [][]Cell
 }
 
 func NewWordament(sz int) *Wordament {
@@ -40,10 +40,10 @@ func (w *Wordament) LoadDictionary(path string) {
 
 }
 
-func (w *Wordament) Solve(matrix [][]rune) []string {
+func (w *Wordament) Solve(matrix [][]rune) [][]Cell {
 	cells := []Cell{}
 	w.matrix = matrix
-	w.result = []string{}
+	w.result = [][]Cell{}
 	for r := 0; r < w.size; r++ {
 		for c := 0; c < w.size; c++ {
 
@@ -61,7 +61,8 @@ func (w *Wordament) Solve(matrix [][]rune) []string {
 func (w *Wordament) solvePos(cell Cell, s string, trn *node, cells []Cell) {
 	newWord := s + trn.s
 	if trn.IsWordEnd() {
-		w.result = append(w.result, newWord)
+		currCells := append(cells, cell)
+		w.result = append(w.result, currCells)
 	}
 
 	ncells := cell.GetNeighbors(w.size-1, w.size-1)

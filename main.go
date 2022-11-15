@@ -58,4 +58,13 @@ func main() {
 
 	solution := w.Solve(matrix)
 	fmt.Println(solution)
+
+	for _, wordCells := range solution {
+		runes := []rune{}
+		for _, wc := range wordCells {
+			runes = append(runes, matrix[wc.row][wc.col])
+		}
+		s := string(runes)
+		fmt.Println(s)
+	}
 }
