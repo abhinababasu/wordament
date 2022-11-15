@@ -7,18 +7,19 @@ import (
 
 const Size = 4 // Width and height of the Wordament matrix
 
-func parseMatrix(s string) [][]string {
-	matrix := make([][]string, Size)
+func parseMatrix(s string) [][]rune {
+	matrix := make([][]rune, Size)
 	for i := range matrix {
-		matrix[i] = make([]string, Size)
+		matrix[i] = make([]rune, Size)
 	}
 
+	// we are just assuming these to be english chars
 	k := 0
 	for i := 0; i < Size; i++ {
 		for j := 0; j < Size; j++ {
 			ch := s[k]
 			k++
-			matrix[i][j] = string(ch)
+			matrix[i][j] = rune(ch)
 		}
 	}
 
@@ -46,7 +47,7 @@ func main() {
 	fmt.Println("Input:")
 	for _, ros := range matrix {
 		for _, cos := range ros {
-			fmt.Print(cos, " ")
+			fmt.Print(string(cos), " ")
 		}
 		fmt.Println()
 	}

@@ -2,15 +2,16 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strings"
 )
 
 type Wordament struct {
-	size int
-	trie *Trie
+	size   int
+	trie   *Trie
+	matrix [][]rune
+	result []string
 }
 
 func NewWordament(sz int) *Wordament {
@@ -39,23 +40,28 @@ func (w *Wordament) LoadDictionary(path string) {
 
 }
 
-func (w *Wordament) Solve(matrix [][]string) [][]int {
+func (w *Wordament) Solve(matrix [][]rune) []string {
 	cells := []Cell{}
-	r, c := 1, 1
-	ch := []rune(matrix[r][c])
-	node := w.trie.root.GetChild(ch[0])
-	if node == nil {
-		return nil
+	w.matrix = matrix
+	w.result = []string{}
+	for r := 0; r < w.size; r++ {
+		for c := 0; c < w.size; c++ {
+
+			ch := w.matrix[r][c]
+			node := w.trie.root.GetChild(ch)
+
+			if node != nil {
+				w.solvePos(GetCell(r, c), "", node, cells)
+			}
+		}
 	}
-	w.solvePos(matrix, r, c, "", node, cells)
-	return nil
+	return w.result
 }
 
-func (w *Wordament) solvePos(matrix [][]string, r, c int, s string, trn *node, cells []Cell) {
-	cell := GetCell(r, c)
+func (w *Wordament) solvePos(cell Cell, s string, trn *node, cells []Cell) {
 	newWord := s + trn.s
 	if trn.IsWordEnd() {
-		fmt.Println(newWord) // this is a word
+		w.result = append(w.result, newWord)
 	}
 
 	ncells := cell.GetNeighbors(w.size-1, w.size-1)
@@ -65,12 +71,12 @@ func (w *Wordament) solvePos(matrix [][]string, r, c int, s string, trn *node, c
 			continue
 		}
 		r, c := ncell.row, ncell.col
-		ch := []rune(matrix[r][c])
-		child := trn.GetChild(ch[0])
+		ch := w.matrix[r][c]
+		child := trn.GetChild(ch)
 		if child == nil {
 			continue
 		}
 
-		w.solvePos(matrix, ncell.row, ncell.col, newWord, child, newList)
+		w.solvePos(ncell, newWord, child, newList)
 	}
 }
