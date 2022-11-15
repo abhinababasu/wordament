@@ -41,12 +41,36 @@ func (w *Wordament) LoadDictionary(path string) {
 
 func (w *Wordament) Solve(matrix [][]string) [][]int {
 	cells := []Cell{}
-	w.solvePos(2, 1, "", w.trie.root, cells)
+	r, c := 1, 1
+	ch := []rune(matrix[r][c])
+	node := w.trie.root.GetChild(ch[0])
+	if node == nil {
+		return nil
+	}
+	w.solvePos(matrix, r, c, "", node, cells)
 	return nil
 }
 
-func (w *Wordament) solvePos(r, c int, s string, trn *node, cells []Cell) {
+func (w *Wordament) solvePos(matrix [][]string, r, c int, s string, trn *node, cells []Cell) {
 	cell := GetCell(r, c)
-	nc := cell.GetNeighbors(w.size-1, w.size-1)
-	fmt.Println("neighbors", nc)
+	newWord := s + trn.s
+	if trn.IsWordEnd() {
+		fmt.Println(newWord) // this is a word
+	}
+
+	ncells := cell.GetNeighbors(w.size-1, w.size-1)
+	newList := append(cells, cell)
+	for _, ncell := range ncells {
+		if ncell.CellInList(cells) {
+			continue
+		}
+		r, c := ncell.row, ncell.col
+		ch := []rune(matrix[r][c])
+		child := trn.GetChild(ch[0])
+		if child == nil {
+			continue
+		}
+
+		w.solvePos(matrix, ncell.row, ncell.col, newWord, child, newList)
+	}
 }

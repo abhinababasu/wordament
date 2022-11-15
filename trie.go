@@ -15,7 +15,7 @@ type Trie struct {
 
 func NewTrie() *Trie {
 	tr := Trie{}
-	tr.root = getNode()
+	tr.root = getNode("")
 	return &tr
 }
 
@@ -30,7 +30,7 @@ func (t *Trie) AddWord(word string) {
 		// if not we add a node for that char and do the same
 		np, ok := p.child[c]
 		if !ok {
-			np = getNode()
+			np = getNode(string(c))
 			p.child[c] = np
 		}
 
@@ -39,7 +39,7 @@ func (t *Trie) AddWord(word string) {
 
 	// marking end of a word by add a null rune node
 	if _, ok := p.child[0]; !ok {
-		p.child[0] = getNode()
+		p.child[0] = getNode(string(0))
 	}
 
 }
@@ -61,16 +61,13 @@ func (t *Trie) WordExists(word string) bool {
 		p = np
 	}
 
-	// we have found all the chars of the word in the trie. But the final
-	// node we have found also has to be marked as end of an word
-	// that is done by a 0/null char, verify that exists
-	_, ok := p.child[0]
-	return ok
-
+	// we have found all the chars of the word in the trie.
+	return p.IsWordEnd()
 }
 
-func getNode() *node {
+func getNode(s string) *node {
 	n := node{}
+	n.s = s
 	n.child = make(map[rune]*node)
 
 	return &n
@@ -86,5 +83,12 @@ func (n *node) GetChild(ch rune) *node {
 	} else {
 		return nil
 	}
+}
 
+// is the current node an end of an word
+func (n *node) IsWordEnd() bool {
+	// A node we have found also has to be marked as end of an word
+	// that is done by a 0/null char, verify that exists
+	_, ok := n.child[0]
+	return ok
 }
