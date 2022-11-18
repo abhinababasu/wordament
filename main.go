@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 const Size = 4 // Width and height of the Wordament matrix
@@ -39,6 +40,7 @@ func main() {
 		return
 	}
 
+	tStart := time.Now()
 	// get the input string in a Size x Size 2D slice. We use string and not char (rune) because later
 	// enhancement should also cover multi char per cell wordaments
 	matrix := parseMatrix(input)
@@ -58,6 +60,7 @@ func main() {
 	w.LoadDictionary("english.2") // todo: add other dicts as well
 
 	solution := w.Solve(matrix)
+	tEnd1 := time.Since(tStart)
 	longestWordLen := 0
 	for _, wordCells := range solution {
 		if len(wordCells) > longestWordLen {
@@ -68,8 +71,11 @@ func main() {
 		fmt.Println(s, wordCells)
 	}
 
+	tEnd2 := time.Since(tStart)
+
 	fmt.Println()
 	fmt.Printf("Total %v words found\n", len(solution))
 	fmt.Printf("Longest word size is %v \n", longestWordLen)
+	fmt.Printf("Took %vms to compute and %vms with printing\n", tEnd1.Milliseconds(), tEnd2.Milliseconds())
 
 }
