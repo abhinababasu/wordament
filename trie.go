@@ -7,7 +7,8 @@ import (
 type node struct {
 	s string // TODO: Likely this will not be needed
 
-	child map[rune]*node
+	child  map[rune]*node
+	isWord bool
 }
 type Trie struct {
 	root *node
@@ -37,10 +38,8 @@ func (t *Trie) AddWord(word string) {
 		p = np
 	}
 
-	// marking end of a word by add a null rune node
-	if _, ok := p.child[0]; !ok {
-		p.child[0] = getNode(string(0))
-	}
+	// marking end of a word
+	p.isWord = true
 
 }
 
@@ -87,8 +86,5 @@ func (n *node) GetChild(ch rune) *node {
 
 // is the current node an end of an word
 func (n *node) IsWordEnd() bool {
-	// A node we have found also has to be marked as end of an word
-	// that is done by a 0/null char, verify that exists
-	_, ok := n.child[0]
-	return ok
+	return n.isWord
 }

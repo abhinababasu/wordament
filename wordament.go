@@ -15,7 +15,10 @@ type Wordament struct {
 }
 
 func NewWordament(sz int) *Wordament {
-	return &Wordament{size: sz}
+	w := Wordament{size: sz}
+	w.trie = NewTrie()
+
+	return &w
 }
 
 func (w *Wordament) LoadDictionary(path string) {
@@ -25,7 +28,6 @@ func (w *Wordament) LoadDictionary(path string) {
 	}
 	defer file.Close()
 
-	w.trie = NewTrie()
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		// remove '
@@ -51,17 +53,24 @@ func (w *Wordament) Solve(matrix [][]rune) [][]Cell {
 			node := w.trie.root.GetChild(ch)
 
 			if node != nil {
-				w.solvePos(GetCell(r, c), "", node, cells)
+				w.solvePos(GetCell(r, c), node, cells)
 			}
 		}
 	}
 	return w.result
 }
 
-func (w *Wordament) solvePos(cell Cell, s string, trn *node, cells []Cell) {
-	newWord := s + trn.s
+func (w *Wordament) solvePos(cell Cell, trn *node, cells []Cell) {
+	// recursively find the words starting at any position in the matrix
+	// cell is the current cell
+	// trn is the trie node being pointed to currently
+	// cells is all the cells in the current discovery path
+
+	// if  we are already in a end of word, add it to solution
 	if trn.IsWordEnd() {
-		currCells := append(cells, cell)
+		currCells := make([]Cell, len(cells)+1)
+		copy(currCells, cells)
+		currCells[len(currCells)-1] = cell
 		w.result = append(w.result, currCells)
 	}
 
@@ -78,6 +87,15 @@ func (w *Wordament) solvePos(cell Cell, s string, trn *node, cells []Cell) {
 			continue
 		}
 
-		w.solvePos(ncell, newWord, child, newList)
+		w.solvePos(ncell, child, newList)
 	}
+}
+
+func (w *Wordament) WordFromCells(cells []Cell) string {
+	runes := []rune{}
+	for _, wc := range cells {
+		runes = append(runes, w.matrix[wc.row][wc.col])
+	}
+
+	return string(runes)
 }

@@ -55,16 +55,21 @@ func main() {
 
 	w := NewWordament(Size)
 	w.LoadDictionary("english.0") // todo: add other dicts as well
+	w.LoadDictionary("english.2") // todo: add other dicts as well
 
 	solution := w.Solve(matrix)
-	fmt.Println(solution)
-
+	longestWordLen := 0
 	for _, wordCells := range solution {
-		runes := []rune{}
-		for _, wc := range wordCells {
-			runes = append(runes, matrix[wc.row][wc.col])
+		if len(wordCells) > longestWordLen {
+			longestWordLen = len(wordCells)
 		}
-		s := string(runes)
-		fmt.Println(s)
+
+		s := w.WordFromCells(wordCells)
+		fmt.Println(s, wordCells)
 	}
+
+	fmt.Println()
+	fmt.Printf("Total %v words found\n", len(solution))
+	fmt.Printf("Longest word size is %v \n", longestWordLen)
+
 }
