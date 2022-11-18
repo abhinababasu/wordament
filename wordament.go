@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -48,7 +49,6 @@ func (w *Wordament) Solve(matrix [][]rune) [][]Cell {
 	w.result = [][]Cell{}
 	for r := 0; r < w.size; r++ {
 		for c := 0; c < w.size; c++ {
-
 			ch := w.matrix[r][c]
 			node := w.trie.root.GetChild(ch)
 
@@ -57,6 +57,12 @@ func (w *Wordament) Solve(matrix [][]rune) [][]Cell {
 			}
 		}
 	}
+
+	// Sort the results with the descending sizes because longer words are more points
+	sort.Slice(w.result, func(i, j int) bool {
+		return len(w.result[i]) > len(w.result[j])
+	})
+
 	return w.result
 }
 
