@@ -1,4 +1,4 @@
-package service
+package solver
 
 // represents a cell type with a row and a col
 type Cell struct {

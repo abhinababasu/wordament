@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"bonggeek.com/wordament/service"
+	"bonggeek.com/wordament/solver"
 	"golang.org/x/exp/slices"
 )
 
@@ -12,9 +12,9 @@ func TestE2E(t *testing.T) {
 	input := "SPAVURNYGERSMSBE"
 	size := 4
 
-	w := service.NewWordament(size)
-	w.LoadDictionary("../service/english.0")
-	w.LoadDictionary("../service/english.2")
+	w := solver.NewWordament(size)
+	w.LoadDictionary("../solver/english.0")
+	w.LoadDictionary("../solver/english.2")
 
 	solution, err := w.Solve(input)
 

@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"bonggeek.com/wordament/service"
+	"bonggeek.com/wordament/solver"
 )
 
 const Size = 4 // Width and height of the Wordament matrix
@@ -26,7 +26,7 @@ func main() {
 
 	tStart := time.Now()
 
-	w := service.NewWordament(size)
+	w := solver.NewWordament(size)
 	w.LoadDictionary("english.0")
 	w.LoadDictionary("english.2")
 
