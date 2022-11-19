@@ -110,7 +110,7 @@ func (w *Wordament) solvePos(cell Cell, trn *node, cells []Cell) {
 		if ncell.CellInList(cells) {
 			continue
 		}
-		r, c := ncell.row, ncell.col
+		r, c := ncell.Row, ncell.Col
 		ch := w.matrix[r][c]
 		child := trn.GetChild(ch)
 		if child == nil {
@@ -124,7 +124,7 @@ func (w *Wordament) solvePos(cell Cell, trn *node, cells []Cell) {
 func (w *Wordament) WordFromCells(cells []Cell) string {
 	runes := []rune{}
 	for _, wc := range cells {
-		runes = append(runes, w.matrix[wc.row][wc.col])
+		runes = append(runes, w.matrix[wc.Row][wc.Col])
 	}
 
 	return string(runes)
