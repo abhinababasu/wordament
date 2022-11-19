@@ -43,3 +43,24 @@ func TestE2E(t *testing.T) {
 		t.Error("Word not found")
 	}
 }
+
+func TestBadInput(t *testing.T) {
+
+	size := 4
+
+	w := solver.NewWordament(size)
+	w.LoadDictionary("../solver/english.0")
+	w.LoadDictionary("../solver/english.2")
+
+	input := "SPAVURN"
+	_, err := w.Solve(input)
+	if err == nil {
+		t.Error("Should fail as input too short")
+	}
+
+	input = "SPAVURNWERWERWEREWR"
+	_, err = w.Solve(input)
+	if err == nil {
+		t.Error("Should fail as input too long")
+	}
+}
