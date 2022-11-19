@@ -8,30 +8,11 @@ import (
 
 const Size = 4 // Width and height of the Wordament matrix
 
-func parseMatrix(s string) [][]rune {
-	matrix := make([][]rune, Size)
-	for i := range matrix {
-		matrix[i] = make([]rune, Size)
-	}
-
-	// we are just assuming these to be english chars
-	k := 0
-	for i := 0; i < Size; i++ {
-		for j := 0; j < Size; j++ {
-			ch := s[k]
-			k++
-			matrix[i][j] = rune(ch)
-		}
-	}
-
-	return matrix
-}
-
 func main() {
 
 	if len(os.Args) < 2 {
 		fmt.Printf("Usage: wordament <full sequennce of %v letters>\n", Size*Size)
-		fmt.Printf("       wordament ZRFLPFUALINXAYEM\n", Size*Size)
+		fmt.Printf("       wordament ZRFLPFUALINXAYEM\n")
 		return
 	}
 	input := os.Args[1:][0]
@@ -41,13 +22,22 @@ func main() {
 	}
 
 	tStart := time.Now()
-	// get the input string in a Size x Size 2D slice. We use string and not char (rune) because later
-	// enhancement should also cover multi char per cell wordaments
-	matrix := parseMatrix(input)
+
+	w := NewWordament(Size)
+	w.LoadDictionary("english.0")
+	w.LoadDictionary("english.2")
+
+	solution, err := w.Solve(input)
+	if err != nil {
+		fmt.Printf("Error!! %v\n ", err)
+		return
+	}
+
+	tEnd1 := time.Since(tStart)
 
 	// Print the matrix
 	fmt.Println("Input:")
-	for _, ros := range matrix {
+	for _, ros := range solution.Input {
 		for _, cos := range ros {
 			fmt.Print(string(cos), " ")
 		}
@@ -55,14 +45,8 @@ func main() {
 	}
 	fmt.Println()
 
-	w := NewWordament(Size)
-	w.LoadDictionary("english.0") // todo: add other dicts as well
-	w.LoadDictionary("english.2") // todo: add other dicts as well
-
-	solution := w.Solve(matrix)
-	tEnd1 := time.Since(tStart)
 	longestWordLen := 0
-	for _, wordCells := range solution {
+	for _, wordCells := range solution.Result {
 		if len(wordCells) > longestWordLen {
 			longestWordLen = len(wordCells)
 		}
@@ -74,7 +58,7 @@ func main() {
 	tEnd2 := time.Since(tStart)
 
 	fmt.Println()
-	fmt.Printf("Total %v words found\n", len(solution))
+	fmt.Printf("Total %v words found\n", len(solution.Result))
 	fmt.Printf("Longest word size is %v \n", longestWordLen)
 	fmt.Printf("Took %vms to compute and %vms with printing\n", tEnd1.Milliseconds(), tEnd2.Milliseconds())
 

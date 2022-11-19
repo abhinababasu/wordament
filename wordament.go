@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"sort"
@@ -13,6 +14,11 @@ type Wordament struct {
 	trie   *Trie
 	matrix [][]rune
 	result [][]Cell
+}
+
+type WordamentResult struct {
+	Input  [][]rune
+	Result [][]Cell
 }
 
 func NewWordament(sz int) *Wordament {
@@ -43,7 +49,25 @@ func (w *Wordament) LoadDictionary(path string) {
 
 }
 
-func (w *Wordament) Solve(matrix [][]rune) [][]Cell {
+func (w *Wordament) Solve(s string) (WordamentResult, error) {
+	if len(s) != w.size*w.size {
+		return WordamentResult{}, fmt.Errorf("Invalid input string. It should be of length %v", w.size*w.size)
+	}
+
+	m := w.parseMatrix(s)
+
+	solution := w.SolveMatrix(m)
+
+	result := WordamentResult{
+		Input:  m,
+		Result: solution,
+	}
+
+	return result, nil
+
+}
+
+func (w *Wordament) SolveMatrix(matrix [][]rune) [][]Cell {
 	cells := []Cell{}
 	w.matrix = matrix
 	w.result = [][]Cell{}
@@ -104,4 +128,23 @@ func (w *Wordament) WordFromCells(cells []Cell) string {
 	}
 
 	return string(runes)
+}
+
+func (w *Wordament) parseMatrix(s string) [][]rune {
+	matrix := make([][]rune, w.size)
+	for i := range matrix {
+		matrix[i] = make([]rune, Size)
+	}
+
+	// we are just assuming these to be english chars
+	k := 0
+	for i := 0; i < Size; i++ {
+		for j := 0; j < Size; j++ {
+			ch := s[k]
+			k++
+			matrix[i][j] = rune(ch)
+		}
+	}
+
+	return matrix
 }
