@@ -14,8 +14,8 @@ func main() {
 
 	size := 4
 	if len(os.Args) < 2 {
-		fmt.Printf("Usage: wordament <full sequennce of %v letters>\n", Size*Size)
-		fmt.Printf("       wordament ZRFLPFUALINXAYEM\n")
+		fmt.Printf("Usage: worament-cli <full sequennce of %v letters>\n", Size*Size)
+		fmt.Printf("       worament-cli ZRFLPFUALINXAYEM\n")
 		return
 	}
 	input := os.Args[1:][0]
