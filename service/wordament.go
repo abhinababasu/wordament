@@ -1,4 +1,4 @@
-package main
+package service
 
 import (
 	"bufio"
@@ -133,13 +133,13 @@ func (w *Wordament) WordFromCells(cells []Cell) string {
 func (w *Wordament) parseMatrix(s string) [][]rune {
 	matrix := make([][]rune, w.size)
 	for i := range matrix {
-		matrix[i] = make([]rune, Size)
+		matrix[i] = make([]rune, w.size)
 	}
 
 	// we are just assuming these to be english chars
 	k := 0
-	for i := 0; i < Size; i++ {
-		for j := 0; j < Size; j++ {
+	for i := 0; i < w.size; i++ {
+		for j := 0; j < w.size; j++ {
 			ch := s[k]
 			k++
 			matrix[i][j] = rune(ch)

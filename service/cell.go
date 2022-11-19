@@ -1,4 +1,4 @@
-package main
+package service
 
 // represents a cell type with a row and a col
 type Cell struct {

@@ -4,26 +4,29 @@ import (
 	"fmt"
 	"os"
 	"time"
+
+	"bonggeek.com/wordament/service"
 )
 
 const Size = 4 // Width and height of the Wordament matrix
 
 func main() {
 
+	size := 4
 	if len(os.Args) < 2 {
 		fmt.Printf("Usage: wordament <full sequennce of %v letters>\n", Size*Size)
 		fmt.Printf("       wordament ZRFLPFUALINXAYEM\n")
 		return
 	}
 	input := os.Args[1:][0]
-	if len(input) < Size*Size {
+	if len(input) < size*size {
 		fmt.Printf("Usage: Input string has to be atleast %v long", Size*Size)
 		return
 	}
 
 	tStart := time.Now()
 
-	w := NewWordament(Size)
+	w := service.NewWordament(size)
 	w.LoadDictionary("english.0")
 	w.LoadDictionary("english.2")
 
