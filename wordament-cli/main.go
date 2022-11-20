@@ -27,8 +27,8 @@ func main() {
 	tStart := time.Now()
 
 	w := solver.NewWordament(size)
-	w.LoadDictionary("english0.dict")
-	w.LoadDictionary("english2.dict")
+	w.LoadDictionary("../service/english0.dict")
+	w.LoadDictionary("../service/english2.dict")
 
 	solution, err := w.Solve(input)
 	if err != nil {

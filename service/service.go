@@ -27,9 +27,8 @@ func main() {
 
 	log.Println("Loading dictionaries")
 
-	// load from current or the solver paths
-	found := loadAllDictionaries(&wordament, "../solver/*.dict")
-	found = found + loadAllDictionaries(&wordament, "./*.dict")
+	// load dictionaries
+	found := loadAllDictionaries(&wordament, "*.dict")
 	if found == 0 {
 		log.Fatal("No dictionaries were found")
 	}

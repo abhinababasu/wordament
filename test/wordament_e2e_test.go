@@ -13,8 +13,7 @@ func TestE2E(t *testing.T) {
 	size := 4
 
 	w := solver.NewWordament(size)
-	w.LoadDictionary("../solver/english0.dict")
-	w.LoadDictionary("../solver/english2.dict")
+	w.LoadDictionary("../service/english0.dict")
 
 	solution, err := w.Solve(input)
 
