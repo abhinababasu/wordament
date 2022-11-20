@@ -3,7 +3,6 @@ package solver
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"sort"
 	"strings"
@@ -28,11 +27,12 @@ func NewWordament(sz int) *Wordament {
 	return &w
 }
 
-func (w *Wordament) LoadDictionary(path string) {
+func (w *Wordament) LoadDictionary(path string) error {
 	file, err := os.Open(path)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
@@ -44,9 +44,10 @@ func (w *Wordament) LoadDictionary(path string) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
+	return nil
 }
 
 func (w *Wordament) Solve(s string) (WordamentResult, error) {
