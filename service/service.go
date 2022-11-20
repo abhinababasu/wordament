@@ -26,12 +26,12 @@ func main() {
 
 	log.Println("Loading dictionaries")
 
-	err := wordament.LoadDictionary("../solver/english.0")
+	err := wordament.LoadDictionary("../solver/english0.dict")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = wordament.LoadDictionary("../solver/english.2")
+	err = wordament.LoadDictionary("../solver/english2.dict")
 	if err != nil {
 		log.Fatal(err)
 	}
