@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path/filepath"
 	"time"
 
 	"bonggeek.com/wordament/solver"
@@ -26,14 +27,11 @@ func main() {
 
 	log.Println("Loading dictionaries")
 
-	err := wordament.LoadDictionary("../solver/english0.dict")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = wordament.LoadDictionary("../solver/english2.dict")
-	if err != nil {
-		log.Fatal(err)
+	// load from current or the solver paths
+	found := loadAllDictionaries(&wordament, "../solver/*.dict")
+	found = found + loadAllDictionaries(&wordament, "./*.dict")
+	if found == 0 {
+		log.Fatal("No dictionaries were found")
 	}
 
 	http.HandleFunc("/", handler) // each request calls handler
@@ -73,4 +71,24 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	timeEnd := time.Since(timeStart)
 	log.Printf("Solved=%v;time=%vms;words=%v", input, timeEnd.Milliseconds(), len(result.Result))
+}
+
+func loadAllDictionaries(wordament *solver.Wordament, path string) int {
+	// load from current or the solver paths
+	found := 0
+	log.Println("Loading dictionary from", path)
+
+	files, err := filepath.Glob(path)
+	if err == nil {
+		for _, file := range files {
+			log.Println("Loading dictionary", file)
+			err := wordament.LoadDictionary(file)
+			if err != nil {
+				log.Fatal(err)
+			}
+			found++
+		}
+	}
+
+	return found
 }
