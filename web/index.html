@@ -114,7 +114,7 @@
         
         $("#PromptDiv").empty();
         $("#InputMatrixDiv").empty();
-        $("#ResultDiv").empty();
+        $("#AllResultsDiv").empty();
 
         var url = 'http://commonvm1.westus2.cloudapp.azure.com:8090/?input=' + inputText;
         var xhr = createCORSRequest('GET', url);
@@ -131,20 +131,27 @@
             var table = getDisplayMatrix(res.Input)
             $("#InputMatrixDiv").append(table)
 
-            $("#ResultDiv").append('<h1>Results - </h1>')
+            $("#AllResultsDiv").append('<h1>Results - </h1>')
 
             for (var ri = 0; ri < res.Result.length; ++ri) {
                 var resString = getResultString(res.Input, res.Result[ri])
-                $("#ResultDiv").append('<h3>' +  ri + '- ' + resString + '</h3>');
+                $("#AllResultsDiv").append('<h3>' +  ri + '- ' + resString + '</h3>');
 
                 var resultTable = getResultsMatrix(res.Input, res.Result[ri])
-                $("#ResultDiv").append(resultTable)   
+                $("#AllResultsDiv").append(resultTable)   
             }
 
+            $("#AllResultsDiv").keydown(function( event ) {
+                /*if ( event.which == 13 ) {
+                    event.preventDefault();
+                }*/
+                alert('key!!');
+            }
+            );
         };
         
         xhr.onerror = function(e) {
-            $("#ResultDiv").html('<h3>Woops, there was an error making the request</h3>');
+            $("#AllResultsDiv").html('<h3>Woops, there was an error making the request</h3>');
             console.log(e);
         
         };
@@ -160,6 +167,13 @@
     function rgbToHex(r, g, b) {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
+
+    function resultKeyDownHandler() {
+        alert("Key!!!")
+    }
+
+
+    
 </script>
 </head>
 
@@ -172,7 +186,7 @@
             <div id="PromptDiv">Try - SPAVURNYGERSMSBE</div>
         </div>
         <div id="InputMatrixDiv"></div>
-        <div id="ResultDiv"></div>
+        <div id="AllResultsDiv" tabindex="0"></div>
    </div>
  </body>
 </html>
