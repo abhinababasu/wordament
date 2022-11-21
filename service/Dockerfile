@@ -7,4 +7,4 @@ COPY service /
 ADD english0.dict /
 ADD english2.dict /
 WORKDIR /
-CMD ["/service"]
+CMD ["/service", "-port=8090"]

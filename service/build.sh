@@ -13,4 +13,4 @@ docker tag $CONTAINER:$VERSION $DOCKER_ID_USER/$CONTAINER
 echo Done ................................
 echo 
 echo Run Container using
-echo docker run -d -p 8080:8080 $CONTAINER:$VERSION
+echo docker run -d -p 8090:8090 $CONTAINER:$VERSION
