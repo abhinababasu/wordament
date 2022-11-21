@@ -28,6 +28,72 @@
         return xhr;
     }
 
+    function getResultString(m, res) {
+        var s = ''
+        for (var ri = 0; ri < res.length; ++ri) {
+            var r = res[ri].Row
+            var c = res[ri].Col
+            s = s + String.fromCharCode(m[r][c])
+        }
+
+        return s
+    }
+
+    function getResultsMatrix(m, res) {
+        var table = document.createElement("table")
+        table.className = "MatrixResultTable"
+
+
+        for (var i = 0; i < 4; i++){
+            var row = table.insertRow(-1)
+            for (var j = 0; j < 4; j++){
+                cell = row.insertCell(-1)
+                cell.innerHTML = '*' //String.fromCharCode(m[i][j])
+            }
+        }
+
+        var r = 0
+        var g = 0
+        var b = 0
+
+        for (var ri = 0; ri < res.length; ++ri) {
+            var row = res[ri].Row
+            var col = res[ri].Col
+            var cell = table.rows[row].cells[col]
+            cell.innerHTML = String.fromCharCode(m[row][col])
+            cell.style.color = "#AA0000"
+        }
+
+        var inc = Math.floor(255 / res.length)
+        for (var ri = 0; ri < res.length; ++ri) {
+            var row = res[ri].Row
+            var col = res[ri].Col
+            var cell = table.rows[row].cells[col]
+            textColor = rgbToHex(r, g, b)
+            cell.style.backgroundColor = textColor
+            r+=inc
+            g+=inc
+            b+=inc
+        }
+        
+        return table
+
+    }
+
+    function getDisplayMatrix(m) {
+        var table = document.createElement("table")
+        table.className = "MatrixTable"
+        for (var i = 0; i < 4; i++){
+            var row = table.insertRow(-1)
+            for (var j = 0; j < 4; j++){
+                cell = row.insertCell(-1)
+                cell.innerHTML = String.fromCharCode(m[i][j])
+            }
+        }
+
+        return table
+
+    }
 
     // Make the actual CORS request.
     function fetchElement() {
@@ -35,16 +101,15 @@
         var banner = document.getElementById("BannerImg");
         banner.src = "./banner_narrow.jpg";
 
-
         if (inputText.length != 16) {
             alert("Has to be 16")
             return 
         }
         
         $("#ResultImgDiv").empty();
+        $("#InputMatrixDiv").empty();
         $("#ResultDiv").empty();
 
-        // This is a sample server that supports CORS.
         var url = 'http://commonvm1.westus2.cloudapp.azure.com:8090/?input=' + inputText;
         var xhr = createCORSRequest('GET', url);
         if (!xhr) {
@@ -55,59 +120,20 @@
         // Response handlers.
         xhr.onload = function() {
             var text = xhr.responseText;
-           // $("#ResultDiv").html('<h3>Got it!!' + text + '</h3>');
-            
             var res = JSON.parse(text);
             
-            var table = document.createElement("table")
-            table.className = "TFtable"
+            var table = getDisplayMatrix(res.Input)
+            $("#InputMatrixDiv").append(table)
 
-            $("#ResultDiv").append(table);
-            for (var i = 0; i < 4; i++){
-                var row = table.insertRow(-1)
-                for (var j = 0; j < 4; j++){
-                    cell = row.insertCell(-1)
-                    cell.innerHTML = String.fromCharCode(res.Input[i][j])
-                }
+            $("#ResultDiv").append('<h1>Results - </h1>')
+
+            for (var ri = 0; ri < res.Result.length; ++ri) {
+                var resString = getResultString(res.Input, res.Result[ri])
+                $("#ResultDiv").append('<h3>' +  ri + '- ' + resString + '</h3>');
+
+                var resultTable = getResultsMatrix(res.Input, res.Result[ri])
+                $("#ResultDiv").append(resultTable)   
             }
-
-            $("#ResultDiv").append(table);
-            $("#ResultDiv").append('<h3>Got it!!' + text + '</h3>');
-
-            // TODO: Actually format and show the results
-
-            /*
-            var table = document.createElement("table")
-                table.className = "TFtable"
-            
-            for (var i=0; i < res.length; i++){
-                var r = res[i];
-                
-                                
-                for(var j = 0; j < r.Elements.length; j++){
-                    
-                    var e = r.Elements[j];
-                                        
-                    var elem = document.createElement("img");
-                    elem.className = "ImageElement";
-                    elem.setAttribute("src", "./images/" + e.AtNumber + ".jpg");
-                    elem.setAttribute("alt", e.Name);
-                    $("#ResultImgDiv").append(elem);             
-                    
-                    row = table.insertRow(-1);
-                    
-                    cellSym = row.insertCell(0);
-                    cellSym.innerHTML = '<b>' + '<sup>' + e.AtNumber + '</sup>' + e.Symbol + '</b>';
-                    cellDesc = row.insertCell(1);
-                    cellDesc.innerHTML = e.Description;
-
-                }
-
-                $("#ResultImgDiv").append("<br/>");
-            }
-
-            
-            */
 
         };
         
@@ -118,6 +144,15 @@
         };
 
         xhr.send();
+    }
+
+    function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
 
 </script>
@@ -132,13 +167,9 @@
             <button id="WordButton" onclick="fetchElement()">Get Elements</button>
         </div>
         <div id="ResultImgDiv"></div>
+        <div id="InputMatrixDiv"></div>
         <div id="ResultDiv"></div>
    </div>
-   <!--
-       Following not working and floating up
-   <div id="Footer">
-        <p>(c) Abhinaba Basu</p>
-    </div>
    -->
  </body>
 </html>

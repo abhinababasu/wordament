@@ -108,12 +108,20 @@ img.ImageElement
     padding: 15px;
 }
 
+
+#InputMatrixDiv
+{
+    padding: 15px;
+}
+
 #ResultDiv
 {
     padding: 15px;
 }
 
-
+#ResultDiv h3{
+    text-align: center;
+}
 
 a:link
 {
@@ -156,28 +164,48 @@ img
 
 
 
-.TFtable{
+.MatrixTable{
+    /*width:50%; */
+    border-collapse:collapse; 
+    margin: 0 auto;
+    color:black;
+}
+.MatrixTable td{ 
+    padding:7px; border:black 1px solid;
+}
+/* provide some minimal visual accomodation for IE8 and below */
+.MatrixTable tr{
+    background: #eeeeee;
+}
+/*  Define the background color for all the ODD background rows  */
+.MatrixTable tr:nth-child(odd){ 
+    background: #dddddd;
+}
+/*  Define the background color for all the EVEN background rows  */
+.MatrixTable tr:nth-child(even){
+    background: #eeeeee;
+}
+
+.MatrixTable td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.MatrixResultTable{
     /*width:50%; */
     border-collapse:collapse; 
     margin: 0 auto;
 }
-.TFtable td{ 
+.MatrixResultTable td{ 
     padding:7px; border:black 1px solid;
 }
-/* provide some minimal visual accomodation for IE8 and below */
-.TFtable tr{
-    background: #eeeeee;
-}
-/*  Define the background color for all the ODD background rows  */
-.TFtable tr:nth-child(odd){ 
-    background: #dddddd;
-}
-/*  Define the background color for all the EVEN background rows  */
-.TFtable tr:nth-child(even){
-    background: #eeeeee;
+
+.MatrixResultTable tr{
+    background: #ffffff;
 }
 
-.TFtable td {
+.MatrixResultTable td {
     text-align: center;
     vertical-align: middle;
 }
