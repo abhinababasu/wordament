@@ -46,6 +46,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	timeStart := time.Now()
 	log.Printf("Remote=%v;Request=%v %v,UA=%v", r.RemoteAddr, r.Method, r.URL.String(), r.UserAgent())
 	query := r.URL.Query()
+
 	input := query.Get("input")
 
 	if len(input) != WordamentSize*WordamentSize {
@@ -66,6 +67,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	//j, _ := json.MarshalIndent(result, "", "  ") // use this for pretty printing on the client directly
 	j, _ := json.Marshal(result)
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(j)
 
 	timeEnd := time.Since(timeStart)
