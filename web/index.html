@@ -31,15 +31,21 @@
 
     // Make the actual CORS request.
     function fetchElement() {
-        var words = document.getElementById('WordBox').value;
+        var inputText = document.getElementById('WordBox').value;
         var banner = document.getElementById("BannerImg");
         banner.src = "./banner_narrow.jpg";
 
+
+        if (inputText.length != 16) {
+            alert("Has to be 16")
+            return 
+        }
+        
         $("#ResultImgDiv").empty();
         $("#ResultDiv").empty();
-        
+
         // This is a sample server that supports CORS.
-        var url = 'http://commonvm1.westus2.cloudapp.azure.com/?words=' + words;
+        var url = 'http://commonvm1.westus2.cloudapp.azure.com:8090/?input=' + inputText;
         var xhr = createCORSRequest('GET', url);
         if (!xhr) {
             alert('CORS not supported');
@@ -49,11 +55,16 @@
         // Response handlers.
         xhr.onload = function() {
             var text = xhr.responseText;
+            $("#ResultDiv").html('<h3>Got it!!' + text + '</h3>');
+            
             var res = JSON.parse(text);
             if (res.length == 0){
                 return;
             }
             
+            // TODO: Actually format and show the results
+            
+            /*
             var table = document.createElement("table")
                 table.className = "TFtable"
             
@@ -84,11 +95,14 @@
             }
 
             $("#ResultDiv").append(table);
+            */
 
         };
         
-        xhr.onerror = function() {
+        xhr.onerror = function(e) {
             $("#ResultDiv").html('<h3>Woops, there was an error making the request</h3>');
+            console.log(e);
+        
         };
 
         xhr.send();
