@@ -1,0 +1,118 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Word Element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" media="screen and (orientation:portrait)" type="text/css" href="small.css" />
+<link rel="stylesheet" media="screen and (min-width:200px) and (max-width: 799px)" type="text/css" href="small.css" />
+<link rel="stylesheet" media="screen and (min-width: 800px)" type="text/css" href="default.css" />
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("jquery", "1.6.0");</script>
+<script type="text/javascript">
+
+    // Create the XHR object.
+    function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+            // XDomainRequest for IE.
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            // CORS not supported.
+            xhr = null;
+        }
+        return xhr;
+    }
+
+
+    // Make the actual CORS request.
+    function fetchElement() {
+        var words = document.getElementById('WordBox').value;
+        var banner = document.getElementById("BannerImg");
+        banner.src = "./banner_narrow.jpg";
+
+        $("#ResultImgDiv").empty();
+        $("#ResultDiv").empty();
+        
+        // This is a sample server that supports CORS.
+        var url = 'http://commonvm1.westus2.cloudapp.azure.com/?words=' + words;
+        var xhr = createCORSRequest('GET', url);
+        if (!xhr) {
+            alert('CORS not supported');
+            return;
+        }
+
+        // Response handlers.
+        xhr.onload = function() {
+            var text = xhr.responseText;
+            var res = JSON.parse(text);
+            if (res.length == 0){
+                return;
+            }
+            
+            var table = document.createElement("table")
+                table.className = "TFtable"
+            
+            for (var i=0; i < res.length; i++){
+                var r = res[i];
+                
+                                
+                for(var j = 0; j < r.Elements.length; j++){
+                    
+                    var e = r.Elements[j];
+                                        
+                    var elem = document.createElement("img");
+                    elem.className = "ImageElement";
+                    elem.setAttribute("src", "./images/" + e.AtNumber + ".jpg");
+                    elem.setAttribute("alt", e.Name);
+                    $("#ResultImgDiv").append(elem);             
+                    
+                    row = table.insertRow(-1);
+                    
+                    cellSym = row.insertCell(0);
+                    cellSym.innerHTML = '<b>' + '<sup>' + e.AtNumber + '</sup>' + e.Symbol + '</b>';
+                    cellDesc = row.insertCell(1);
+                    cellDesc.innerHTML = e.Description;
+
+                }
+
+                $("#ResultImgDiv").append("<br/>");
+            }
+
+            $("#ResultDiv").append(table);
+
+        };
+        
+        xhr.onerror = function() {
+            $("#ResultDiv").html('<h3>Woops, there was an error making the request</h3>');
+        };
+
+        xhr.send();
+    }
+
+</script>
+</head>
+
+<body>
+    <div id="mainDiv">
+        <img id="BannerImg" src="./banner.png" />
+        <div id="InputDiv">
+            <p id="DescriptionText">Enter a word or name and see what it is made of</p>
+            <input type="text" id="WordBox" placeholder="Type a word"/>
+            <button id="WordButton" onclick="fetchElement()">Get Elements</button>
+        </div>
+        <div id="ResultImgDiv"></div>
+        <div id="ResultDiv"></div>
+   </div>
+   <!--
+       Following not working and floating up
+   <div id="Footer">
+        <p>(c) Abhinaba Basu</p>
+    </div>
+   -->
+ </body>
+</html>

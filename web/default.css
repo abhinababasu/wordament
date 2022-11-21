@@ -1,0 +1,177 @@
+body
+{
+    font-family: helvetica, Arial Black, Arial;
+    font-size:10pt;
+    background-color: #ffffff;
+}
+        
+#mainDiv
+{
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff;
+}
+
+#InputDiv
+{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    justify-content: center;
+}
+
+#Header
+{
+    font-family: helvetica, Arial Black, Arial;
+    font-size: 20pt;
+}
+
+#Footer
+{
+    position:absolute;
+    bottom:0;
+    width:99%;
+    height:40px;   /* Height of the footer */
+    background-color: #DCDCDC;
+}
+
+#DescriptionText
+{
+    font-size: 14px;
+}
+
+#WordButton
+{
+    width: *;
+    font-size: 14px;
+    border-radius: 15px 30px;
+    background-color: #DCDCDC; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#WordButton:focus{
+    outline: none;
+}
+
+#WordBox
+{
+    width: 75%;
+    border: 5px solid white; 
+    -webkit-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    -moz-box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    
+}
+
+#WordBox:focus{
+    outline: none;
+}
+
+#BannerImg
+{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+img.ImageElement
+{
+    width: 75px;
+    height: 75px;
+    margin: 5px;
+}
+
+#ResultImgDiv
+{
+    padding: 15px;
+}
+
+#ResultDiv
+{
+    padding: 15px;
+}
+
+
+
+a:link
+{
+    text-decoration: none;
+    color: #BBBBBB;
+}
+
+a:visited
+{
+    text-decoration: none;
+    color: #BBBBBB;
+}
+        
+a:hover
+{
+    color: black;
+    text-decoration:none;
+}
+
+h1.title
+{
+    font-family:Arial Black, Arial;
+    font-size:16pt;
+}
+h1.groupHeader
+{
+    font-family:Arial Black, Arial;
+    text-transform: uppercase;
+    font-size:14pt;
+}
+img
+{
+    border-style: none;
+}
+
+.elemList
+{
+    border:none;
+}
+
+
+
+.TFtable{
+    width:100%; 
+    border-collapse:collapse; 
+}
+.TFtable td{ 
+    padding:7px; border:black 1px solid;
+}
+/* provide some minimal visual accomodation for IE8 and below */
+.TFtable tr{
+    background: #eeeeee;
+}
+/*  Define the background color for all the ODD background rows  */
+.TFtable tr:nth-child(odd){ 
+    background: #dddddd;
+}
+/*  Define the background color for all the EVEN background rows  */
+.TFtable tr:nth-child(even){
+    background: #eeeeee;
+}
