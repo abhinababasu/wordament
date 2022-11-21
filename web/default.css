@@ -194,7 +194,6 @@ img
     vertical-align: middle;
 }
 
-
 .MatrixResultTable{
     /*width:50%; */
     border-collapse:collapse; 
@@ -202,14 +201,14 @@ img
     font-size: 30px;
 }
 .MatrixResultTable td{ 
-    padding:7px; border:black 1px solid;
+    padding:7px;
+    border:black 1px solid;
+    text-align: center;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
 }
 
 .MatrixResultTable tr{
     background: #ffffff;
-}
-
-.MatrixResultTable td {
-    text-align: center;
-    vertical-align: middle;
 }

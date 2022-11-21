@@ -48,7 +48,8 @@
             var row = table.insertRow(-1)
             for (var j = 0; j < 4; j++){
                 cell = row.insertCell(-1)
-                cell.innerHTML = '*' //String.fromCharCode(m[i][j])
+                cell.innerHTML = String.fromCharCode(m[i][j])
+                cell.style.color = "#EEEEEE"
             }
         }
 
