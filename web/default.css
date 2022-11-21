@@ -157,8 +157,9 @@ img
 
 
 .TFtable{
-    width:100%; 
+    /*width:50%; */
     border-collapse:collapse; 
+    margin: 0 auto;
 }
 .TFtable td{ 
     padding:7px; border:black 1px solid;
@@ -174,4 +175,9 @@ img
 /*  Define the background color for all the EVEN background rows  */
 .TFtable tr:nth-child(even){
     background: #eeeeee;
+}
+
+.TFtable td {
+    text-align: center;
+    vertical-align: middle;
 }

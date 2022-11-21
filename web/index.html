@@ -55,15 +55,27 @@
         // Response handlers.
         xhr.onload = function() {
             var text = xhr.responseText;
-            $("#ResultDiv").html('<h3>Got it!!' + text + '</h3>');
+           // $("#ResultDiv").html('<h3>Got it!!' + text + '</h3>');
             
             var res = JSON.parse(text);
-            if (res.length == 0){
-                return;
+            
+            var table = document.createElement("table")
+            table.className = "TFtable"
+
+            $("#ResultDiv").append(table);
+            for (var i = 0; i < 4; i++){
+                var row = table.insertRow(-1)
+                for (var j = 0; j < 4; j++){
+                    cell = row.insertCell(-1)
+                    cell.innerHTML = String.fromCharCode(res.Input[i][j])
+                }
             }
-            
+
+            $("#ResultDiv").append(table);
+            $("#ResultDiv").append('<h3>Got it!!' + text + '</h3>');
+
             // TODO: Actually format and show the results
-            
+
             /*
             var table = document.createElement("table")
                 table.className = "TFtable"
@@ -94,7 +106,7 @@
                 $("#ResultImgDiv").append("<br/>");
             }
 
-            $("#ResultDiv").append(table);
+            
             */
 
         };
