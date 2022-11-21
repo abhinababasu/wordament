@@ -98,6 +98,11 @@
     // Make the actual CORS request.
     function fetchElement() {
         var inputText = document.getElementById('WordBox').value;
+
+        // input text shows as caps in UI because of css, actually convert to uppercase to 
+        // send to API
+        inputText = inputText.toUpperCase()
+
         var banner = document.getElementById("BannerImg");
         banner.src = "./banner_narrow.jpg";
 
@@ -106,7 +111,7 @@
             return 
         }
         
-        $("#ResultImgDiv").empty();
+        $("#PromptDiv").empty();
         $("#InputMatrixDiv").empty();
         $("#ResultDiv").empty();
 
@@ -154,7 +159,6 @@
     function rgbToHex(r, g, b) {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
-
 </script>
 </head>
 
@@ -162,11 +166,10 @@
     <div id="mainDiv">
         <img id="BannerImg" src="./banner.png" />
         <div id="InputDiv">
-            <p id="DescriptionText">Enter a word or name and see what it is made of</p>
-            <input type="text" oninput="this.value = this.value.toUpperCase()" id="WordBox" placeholder="Type all 16 wordament letters"/>
+            <input type="text" id="WordBox" placeholder="Type all 16 wordament letters"/>
             <button id="WordButton" onclick="fetchElement()">Get Elements</button>
+            <div id="PromptDiv">Try - SPAVURNYGERSMSBE</div>
         </div>
-        <div id="ResultImgDiv"></div>
         <div id="InputMatrixDiv"></div>
         <div id="ResultDiv"></div>
    </div>
