@@ -244,7 +244,6 @@ td.tdAppName
 }
 
 .MatrixResultInnerCh {
-    
     position: absolute;
     
     width: 50px;
@@ -253,16 +252,15 @@ td.tdAppName
     text-align: center;
     vertical-align: middle;
     
-    color: #dddddd;
+    color: #BBBBBB;
 
     font-size: 40px;
     left: 0px;
-    top: 0px;    
+    top: 5px;
 }
 
 
 .MatrixResultInnerArrow {
-    /*
     position: absolute;
 
     width: 50px;
@@ -272,8 +270,17 @@ td.tdAppName
     vertical-align: middle;
 
     
-    font-size: 40px;
+    font-size: 60px;
     left: 0px;
-    top: 0px;
-    */
+    top: -10px;
+}
+
+
+/*  Define the background color for all the ODD background rows  */
+.MatrixResultTable tr:nth-child(odd){ 
+    background: #dddddd;
+}
+/*  Define the background color for all the EVEN background rows  */
+.MatrixResultTable tr:nth-child(even){
+    background: #eeeeee;
 }
