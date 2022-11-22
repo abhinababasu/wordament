@@ -83,7 +83,9 @@ Misc
 =====
 While there is many more optimization that can be done, at this point the service meets my basic requirement. On a 2 vCPU Azure VM, the service loads the dictionaries in <100ms and solves a wordament game in ~1ms 
 
-TODOs
-=====
-1. Build a static web-site that pretty prints the results
-2. There is very little tests, add those
+TODOs / Known Issues
+====================
+1. No multiple letter cell support
+1. Does get duplicate words
+1. Result is sorted by length only
+1. Word found is as good as the word list I have (which is not very good)
