@@ -170,6 +170,15 @@ td.tdAppName
     padding: 15px;
 }
 
+
+#ResultDiv
+{
+    padding: 15px;
+}
+
+#ResultDiv h3{
+    text-align: center;
+}
 #AllResultsDiv
 {
     padding: 15px;

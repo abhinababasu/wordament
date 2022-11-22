@@ -96,8 +96,13 @@
 
     }
 
+    var Results;
+    var CurrentResult = -1;
+    var Input;
+
     // Make the actual CORS request.
     function fetchElement() {
+        
         var inputText = document.getElementById('WordBox').value;
 
         // input text shows as caps in UI because of css, actually convert to uppercase to 
@@ -114,6 +119,7 @@
         
         $("#PromptDiv").empty();
         $("#InputMatrixDiv").empty();
+        $("#ResultDiv").empty();
         $("#AllResultsDiv").empty();
 
         var url = 'http://commonvm1.westus2.cloudapp.azure.com:8090/?input=' + inputText;
@@ -128,24 +134,46 @@
             var text = xhr.responseText;
             var res = JSON.parse(text);
             
-            var table = getDisplayMatrix(res.Input)
+            // store in the global vars
+            Input = res.Input
+            Results = res.Result
+            CurrentResult = 0
+
+            // show the input wordament matrix
+            var table = getDisplayMatrix(Input)
+
             $("#InputMatrixDiv").append(table)
+            
+            // Show one result on the top
+            ShowCurrentResultMatrix()      
 
-            $("#AllResultsDiv").append('<h1>Results - </h1>')
-
-            for (var ri = 0; ri < res.Result.length; ++ri) {
-                var resString = getResultString(res.Input, res.Result[ri])
+            // Show all the results 
+            $("#AllResultsDiv").append('<h1>All Results</h1>')
+            for (var ri = 0; ri < Results.length; ++ri) {
+                var resString = getResultString(res.Input, Results[ri])
                 $("#AllResultsDiv").append('<h3>' +  ri + '- ' + resString + '</h3>');
 
-                var resultTable = getResultsMatrix(res.Input, res.Result[ri])
+                var resultTable = getResultsMatrix(res.Input, Results[ri])
                 $("#AllResultsDiv").append(resultTable)   
             }
 
-            $("#AllResultsDiv").keydown(function( event ) {
-                /*if ( event.which == 13 ) {
-                    event.preventDefault();
-                }*/
-                alert('key!!');
+
+            // Based on arrow keys show the next/prev result on top
+            $("#ResultDiv").keydown(function( event ) {
+                if (CurrentResult  == -1) {
+                    return
+                }
+
+                // Right arrow
+                if (event.keyCode == 39 ){
+                    ShowNextResultMatrix();
+                    return
+                }
+
+                if (event.keyCode == 37){
+                    ShowPrevResultMatrix();
+                    return
+                }
             }
             );
         };
@@ -158,6 +186,7 @@
 
         xhr.send();
     }
+
 
     function componentToHex(c) {
         var hex = c.toString(16);
@@ -172,6 +201,26 @@
         alert("Key!!!")
     }
 
+    function ShowPrevResultMatrix(){
+        if (CurrentResult > 0){
+            CurrentResult--;
+            ShowCurrentResultMatrix();
+        }
+    }
+
+    function ShowNextResultMatrix(){
+        if (CurrentResult < (Results.length - 1)) {
+            CurrentResult++;
+            ShowCurrentResultMatrix();
+        }
+    }
+
+    function ShowCurrentResultMatrix(){
+        var resString = getResultString(Input, Results[CurrentResult])
+        $("#ResultDiv").html('<h3> Result ' +  (CurrentResult + 1) + '- ' + resString + '</h3>');
+        var resultTable = getResultsMatrix(Input, Results[CurrentResult]);
+        $("#ResultDiv").append(resultTable);
+    }
 
     
 </script>
@@ -186,7 +235,8 @@
             <div id="PromptDiv">Try - SPAVURNYGERSMSBE</div>
         </div>
         <div id="InputMatrixDiv"></div>
-        <div id="AllResultsDiv" tabindex="0"></div>
+        <div id="ResultDiv" tabindex="-1"></div>
+        <div id="AllResultsDiv"></div>
    </div>
  </body>
 </html>
