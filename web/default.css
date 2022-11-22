@@ -184,7 +184,11 @@ img
 }
 
 .MatrixTable td{ 
-    padding:7px; border:black 1px solid;
+    border:black 1px solid;
+    text-align: center;
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
 }
 /* provide some minimal visual accomodation for IE8 and below */
 .MatrixTable tr{
@@ -211,14 +215,63 @@ img
     font-size: 30px;
 }
 .MatrixResultTable td{ 
-    padding:7px;
+    /*padding:7px;*/
     border:black 1px solid;
     text-align: center;
     vertical-align: middle;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
 }
 
 .MatrixResultTable tr{
-    background: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.MatrixResultTDOutter {
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+
+.MatrixResultInnerCh {
+    position: absolute;
+    
+    width: 50px;
+    height: 50px;
+    
+    text-align: center;
+    vertical-align: middle;
+    
+    color: #cccccc;
+
+    font-size: 40px;
+    left: 0px;
+    top: 5px;
+}
+
+
+.MatrixResultInnerArrow {
+    position: absolute;
+
+    width: 50px;
+    height: 50px;
+    
+    text-align: center;
+    vertical-align: middle;
+
+    
+    font-size: 60px;
+    left: 0px;
+    top: -10px;
+}
+
+
+/*  Define the background color for all the ODD background rows  */
+.MatrixResultTable tr:nth-child(odd){ 
+    background: #dddddd;
+}
+/*  Define the background color for all the EVEN background rows  */
+.MatrixResultTable tr:nth-child(even){
+    background: #eeeeee;
 }

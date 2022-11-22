@@ -48,38 +48,69 @@
         var table = document.createElement("table")
         table.className = "MatrixResultTable"
 
-
         for (var i = 0; i < 4; i++){
-            var row = table.insertRow(-1)
+            var row = table.insertRow(-1);
             for (var j = 0; j < 4; j++){
-                cell = row.insertCell(-1)
-                cell.innerHTML = String.fromCharCode(m[i][j])
-                cell.style.color = "#EEEEEE"
+                cell = row.insertCell(-1);
             }
         }
 
-        var r = 0
-        var g = 0
-        var b = 0
+        var r = 0;
+        var g = 255;
+        var b = 20;
+        
+        var rgbDelta = Math.floor(255 / res.length);
 
         for (var ri = 0; ri < res.length; ++ri) {
             var row = res[ri].Row
             var col = res[ri].Col
-            var cell = table.rows[row].cells[col]
-            cell.innerHTML = String.fromCharCode(m[row][col])
-            cell.style.color = "#AA0000"
-        }
+            var cell = table.rows[row].cells[col] 
+            var flowCh = '⚬';
+            if (ri != res.length - 1){
+                var nextRow = res[ri+1].Row;
+                var nextCol = res[ri+1].Col;
+                if (nextRow < row && nextCol < col) {
+                    flowCh = '↖';
+                } else  if (nextRow < row && nextCol == col) {
+                    flowCh = '↑';
+                }else  if (nextRow < row && nextCol > col) {
+                    flowCh = '↗';
+                }else  if (nextRow == row && nextCol < col) {
+                    flowCh = '←';
+                }else  if (nextRow == row && nextCol > col) {
+                    flowCh = '→';
+                }else  if (nextRow > row && nextCol < col) {
+                    flowCh = '↙';
+                }else  if (nextRow > row && nextCol == col) {
+                    flowCh = '↓';
+                }else  if (nextRow > row && nextCol > col) {
+                    flowCh = '↘';
+                }
+            }
 
-        var inc = Math.floor(255 / res.length)
-        for (var ri = 0; ri < res.length; ++ri) {
-            var row = res[ri].Row
-            var col = res[ri].Col
-            var cell = table.rows[row].cells[col]
-            textColor = rgbToHex(r, g, b)
-            cell.style.backgroundColor = textColor
-            r+=inc
-            g+=inc
-            b+=inc
+            var outterDiv = document.createElement("div");
+            outterDiv.classList.add("MatrixResultTDOutter");
+
+            
+            var innerDivArrow = document.createElement("div");
+            innerDivArrow.classList.add("MatrixResultInnerArrow");
+            innerDivArrow.innerHTML = flowCh;
+            
+            
+            var color = rgbToHex(r, g, b);
+            innerDivArrow.style.color = color;
+            r+=rgbDelta;
+            g-=rgbDelta;
+
+            
+            var innerDivCh = document.createElement("div");
+            innerDivCh.classList.add("MatrixResultInnerCh");
+            innerDivCh.innerHTML = String.fromCharCode(m[row][col]);
+
+            outterDiv.append(innerDivCh);
+            outterDiv.append(innerDivArrow);
+
+            cell.append(outterDiv);
         }
         
         return table
