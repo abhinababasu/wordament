@@ -11,6 +11,11 @@
 <script type="text/javascript">google.load("jquery", "1.6.0");</script>
 <script type="text/javascript">
 
+    // Add fully body arrow handler to shuffle through the results
+    window.onload = function() {
+        document.body.onkeydown = KeyDownHandler;
+    };
+
     // Create the XHR object.
     function createCORSRequest(method, url) {
         var xhr = new XMLHttpRequest();
@@ -156,26 +161,6 @@
                 var resultTable = getResultsMatrix(res.Input, Results[ri])
                 $("#AllResultsDiv").append(resultTable)   
             }
-
-
-            // Based on arrow keys show the next/prev result on top
-            $("#ResultDiv").keydown(function( event ) {
-                if (CurrentResult  == -1) {
-                    return
-                }
-
-                // Right arrow
-                if (event.keyCode == 39 ){
-                    ShowNextResultMatrix();
-                    return
-                }
-
-                if (event.keyCode == 37){
-                    ShowPrevResultMatrix();
-                    return
-                }
-            }
-            );
         };
         
         xhr.onerror = function(e) {
@@ -220,6 +205,23 @@
         $("#ResultDiv").html('<h3> Result ' +  (CurrentResult + 1) + '- ' + resString + '</h3>');
         var resultTable = getResultsMatrix(Input, Results[CurrentResult]);
         $("#ResultDiv").append(resultTable);
+    }
+
+    function KeyDownHandler(event) {
+        if (CurrentResult  == -1) {
+            return
+        }
+
+        // Right arrow
+        if (event.keyCode == 39 ){
+            ShowNextResultMatrix();
+            return
+        }
+
+        if (event.keyCode == 37){
+            ShowPrevResultMatrix();
+            return
+        }
     }
 
     
