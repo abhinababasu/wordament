@@ -237,6 +237,8 @@
         $("#ResultDiv").html('<h3> Result ' +  (CurrentResult + 1) + '- ' + resString + '</h3>');
         var resultTable = getResultsMatrix(Input, Results[CurrentResult]);
         $("#ResultDiv").append(resultTable);
+
+        resultTable.onclick = ShowNextResultMatrix;
     }
 
     function KeyDownHandler(event) {
