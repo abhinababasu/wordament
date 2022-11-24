@@ -9,8 +9,12 @@ import (
 )
 
 type Wordament struct {
-	size   int
-	trie   *Trie
+	size int
+	trie *Trie
+
+	// TODO: The following should go away to make solve calls thread safe
+	// also move those functions from class methods to ensure it is indeed
+	// not taking any reference from this struct
 	matrix [][]rune
 	result [][]Cell
 }
@@ -72,13 +76,14 @@ func (w *Wordament) SolveMatrix(matrix [][]rune) [][]Cell {
 	cells := []Cell{}
 	w.matrix = matrix
 	w.result = [][]Cell{}
+	wordsFound := make(map[string]bool)
 	for r := 0; r < w.size; r++ {
 		for c := 0; c < w.size; c++ {
 			ch := w.matrix[r][c]
 			node := w.trie.root.GetChild(ch)
 
 			if node != nil {
-				w.solvePos(GetCell(r, c), node, cells)
+				w.solvePos(wordsFound, GetCell(r, c), node, cells)
 			}
 		}
 	}
@@ -91,7 +96,7 @@ func (w *Wordament) SolveMatrix(matrix [][]rune) [][]Cell {
 	return w.result
 }
 
-func (w *Wordament) solvePos(cell Cell, trn *node, cells []Cell) {
+func (w *Wordament) solvePos(wordsFound map[string]bool, cell Cell, trn *node, cells []Cell) {
 	// recursively find the words starting at any position in the matrix
 	// cell is the current cell
 	// trn is the trie node being pointed to currently
@@ -102,7 +107,11 @@ func (w *Wordament) solvePos(cell Cell, trn *node, cells []Cell) {
 		currCells := make([]Cell, len(cells)+1)
 		copy(currCells, cells)
 		currCells[len(currCells)-1] = cell
-		w.result = append(w.result, currCells)
+		currWord := w.WordFromCells(currCells)
+		if _, found := wordsFound[currWord]; !found {
+			wordsFound[currWord] = true
+			w.result = append(w.result, currCells)
+		}
 	}
 
 	ncells := cell.GetNeighbors(w.size-1, w.size-1)
@@ -118,7 +127,7 @@ func (w *Wordament) solvePos(cell Cell, trn *node, cells []Cell) {
 			continue
 		}
 
-		w.solvePos(ncell, child, newList)
+		w.solvePos(wordsFound, ncell, child, newList)
 	}
 }
 

@@ -63,3 +63,32 @@ func TestBadInput(t *testing.T) {
 		t.Error("Should fail as input too long")
 	}
 }
+
+func TestNoDuplicate(t *testing.T) {
+	input := "SPAVURNYGERSMSBE"
+	size := 4
+
+	w := solver.NewWordament(size)
+	w.LoadDictionary("../service/english0.dict")
+
+	solution, err := w.Solve(input)
+
+	if err != nil {
+		t.Error("There should be no error")
+	}
+
+	if len(solution.Result) < 100 {
+		t.Errorf("Too few (%v) results", len(solution.Result))
+	}
+
+	wordsFound := make(map[string]bool)
+	for _, wordCells := range solution.Result {
+		word := w.WordFromCells(wordCells)
+		_, found := wordsFound[word]
+		if found {
+			t.Errorf("Duplicate word %v found", word)
+		} else {
+			wordsFound[word] = true
+		}
+	}
+}
