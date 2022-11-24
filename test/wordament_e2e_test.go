@@ -1,24 +1,34 @@
 package main
 
 import (
+	"bufio"
+	"os"
+	"strings"
 	"testing"
 
 	"bonggeek.com/wordament/solver"
 	"golang.org/x/exp/slices"
 )
 
-func TestE2E(t *testing.T) {
+const dictionaryPath = "../service/english0.dict"
 
+func TestE2E(t *testing.T) {
+	// create and solve the wordament
 	input := "SPAVURNYGERSMSBE"
 	size := 4
-
 	w := solver.NewWordament(size)
-	w.LoadDictionary("../service/english0.dict")
+	w.LoadDictionary(dictionaryPath)
 
 	solution, err := w.Solve(input)
 
 	if err != nil {
 		t.Error("There should be no error")
+	}
+
+	// iterate through all the solutions found
+	validWords, err := loadDictionary(dictionaryPath)
+	if err != nil {
+		t.Fatalf("Load local dict failed with error %v", err)
 	}
 
 	longestWordLen := 0
@@ -29,6 +39,9 @@ func TestE2E(t *testing.T) {
 		}
 
 		word := w.WordFromCells(wordCells)
+		if _, ok := validWords[word]; !ok {
+			t.Errorf("Found word %v which is not in the dictionary", word)
+		}
 		wordsFound = append(wordsFound, word)
 	}
 
@@ -48,8 +61,7 @@ func TestBadInput(t *testing.T) {
 	size := 4
 
 	w := solver.NewWordament(size)
-	w.LoadDictionary("../solver/english.0")
-	w.LoadDictionary("../solver/english.2")
+	w.LoadDictionary(dictionaryPath)
 
 	input := "SPAVURN"
 	_, err := w.Solve(input)
@@ -69,7 +81,7 @@ func TestNoDuplicate(t *testing.T) {
 	size := 4
 
 	w := solver.NewWordament(size)
-	w.LoadDictionary("../service/english0.dict")
+	w.LoadDictionary(dictionaryPath)
 
 	solution, err := w.Solve(input)
 
@@ -91,4 +103,28 @@ func TestNoDuplicate(t *testing.T) {
 			wordsFound[word] = true
 		}
 	}
+}
+
+func loadDictionary(path string) (map[string]bool, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	defer file.Close()
+	words := make(map[string]bool)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		// remove '
+		var word string
+		word = strings.ReplaceAll(scanner.Text(), "'", "")
+		word = strings.ToUpper(word)
+		words[word] = true
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return words, nil
 }
