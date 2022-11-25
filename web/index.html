@@ -53,11 +53,13 @@
             var row = table.insertRow(-1);
             for (var j = 0; j < 4; j++){
                 cell = row.insertCell(-1);
+                
+                cell.innerHTML = String.fromCharCode(m[i][j]);
             }
         }
         // mark starting cell as green and last stopping cell as red
         var startCell = table.rows[res[0].Row].cells[res[0].Col]
-        startCell.style.backgroundColor = "#669900";
+        startCell.style.backgroundColor = "#667000";
 
         var endCell = table.rows[res[res.length-1].Row].cells[res[res.length-1].Col]
         endCell.style.backgroundColor = "#cc3300";
@@ -110,25 +112,10 @@
 
             outterDiv.append(innerDivCh);
             outterDiv.append(innerDivArrow);
-
+            cell.innerHTML = "";
             cell.append(outterDiv);
         }
         
-        return table
-
-    }
-
-    function getDisplayMatrix(m) {
-        var table = document.createElement("table")
-        table.className = "MatrixTable"
-        for (var i = 0; i < 4; i++){
-            var row = table.insertRow(-1)
-            for (var j = 0; j < 4; j++){
-                cell = row.insertCell(-1)
-                cell.innerHTML = String.fromCharCode(m[i][j])
-            }
-        }
-
         return table
 
     }
@@ -176,11 +163,6 @@
             Results = res.Result
             CurrentResult = 0
 
-            // show the input wordament matrix
-            var table = getDisplayMatrix(Input)
-
-            $("#InputMatrixDiv").append(table)
-            
             // Show one result on the top
             ShowCurrentResultMatrix()      
 
@@ -270,8 +252,7 @@
             <button id="WordButton" onclick="fetchElement()">Get Elements</button>
             <div id="PromptDiv">Try - SPAVURNYGERSMSBE</div>
         </div>
-        <div id="InputMatrixDiv"></div>
-        <div id="ResultDiv" tabindex="-1"></div>
+        <div id="ResultDiv" ></div>
         <div id="AllResultsDiv"></div>
    </div>
  </body>

@@ -165,48 +165,7 @@ h1.groupHeader
     text-transform: uppercase;
     font-size:14pt;
 }
-img
-{
-    border-style: none;
-}
 
-.elemList
-{
-    border:none;
-}
-
-.MatrixTable{
-    /*width:50%; */
-    border-collapse:collapse; 
-    margin: 0 auto;
-    color:black;
-    font-size: 30px;
-}
-
-.MatrixTable td{ 
-    border:black 1px solid;
-    text-align: center;
-    vertical-align: middle;
-    width: 50px;
-    height: 50px;
-}
-/* provide some minimal visual accomodation for IE8 and below */
-.MatrixTable tr{
-    background: #eeeeee;
-}
-/*  Define the background color for all the ODD background rows  */
-.MatrixTable tr:nth-child(odd){ 
-    background: #dddddd;
-}
-/*  Define the background color for all the EVEN background rows  */
-.MatrixTable tr:nth-child(even){
-    background: #eeeeee;
-}
-
-.MatrixTable td {
-    text-align: center;
-    vertical-align: middle;
-}
 
 .MatrixResultTable{
     /*width:50%; */
@@ -221,6 +180,8 @@ img
     vertical-align: middle;
     width: 50px;
     height: 50px;
+    color: #CCCCCC;
+    background-color: #EEEEEE;
 }
 
 .MatrixResultTable tr{
@@ -243,13 +204,12 @@ img
     text-align: center;
     vertical-align: middle;
     
-    color: #BBBBBB;
-
+    color: #B0B0B0;
+    
     font-size: 40px;
     left: 0px;
     top: 5px;
 }
-
 
 .MatrixResultInnerArrow {
     position: absolute;
@@ -263,14 +223,6 @@ img
     font-size: 50px;
     left: 0px;
     top: -5px;
-}
 
-
-/*  Define the background color for all the ODD background rows  */
-.MatrixResultTable tr:nth-child(odd){ 
-    background: #dddddd;
-}
-/*  Define the background color for all the EVEN background rows  */
-.MatrixResultTable tr:nth-child(even){
-    background: #eeeeee;
+    color: black;
 }

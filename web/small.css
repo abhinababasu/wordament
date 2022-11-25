@@ -188,41 +188,13 @@ td.tdAppName
     text-align: center;
 }
 
-.MatrixTable{
-    /*width:50%; */
-    border-collapse:collapse; 
-    margin: 0 auto;
-    color:black;
-    font-size: 30px;
-}
-
-.MatrixTable td{ 
-    padding:7px; border:black 1px solid;
-}
-/* provide some minimal visual accomodation for IE8 and below */
-.MatrixTable tr{
-    background: #eeeeee;
-}
-/*  Define the background color for all the ODD background rows  */
-.MatrixTable tr:nth-child(odd){ 
-    background: #dddddd;
-}
-/*  Define the background color for all the EVEN background rows  */
-.MatrixTable tr:nth-child(even){
-    background: #eeeeee;
-}
-
-.MatrixTable td {
-    text-align: center;
-    vertical-align: middle;
-}
-
 .MatrixResultTable{
     /*width:50%; */
     border-collapse:collapse; 
     margin: 0 auto;
     font-size: 30px;
 }
+
 .MatrixResultTable td{ 
     /*padding:7px;*/
     border:black 1px solid;
@@ -230,6 +202,8 @@ td.tdAppName
     vertical-align: middle;
     width: 50px;
     height: 50px;
+    color: #CCCCCC;
+    background-color: #EEEEEE;
 }
 
 .MatrixResultTable tr{
@@ -252,13 +226,12 @@ td.tdAppName
     text-align: center;
     vertical-align: middle;
     
-    color: #BBBBBB;
-
+    color: #B0B0B0;
+    
     font-size: 40px;
     left: 0px;
     top: 5px;
 }
-
 
 .MatrixResultInnerArrow {
     position: absolute;
@@ -272,14 +245,6 @@ td.tdAppName
     font-size: 50px;
     left: 0px;
     top: -5px;
-}
 
-
-/*  Define the background color for all the ODD background rows  */
-.MatrixResultTable tr:nth-child(odd){ 
-    background: #dddddd;
-}
-/*  Define the background color for all the EVEN background rows  */
-.MatrixResultTable tr:nth-child(even){
-    background: #eeeeee;
+    color: black;
 }
