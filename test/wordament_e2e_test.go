@@ -2,12 +2,13 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 
 	"bonggeek.com/wordament/solver"
-	"golang.org/x/exp/slices"
 )
 
 const dictionaryPath = "../service/english0.dict"
@@ -25,34 +26,17 @@ func TestE2E(t *testing.T) {
 		t.Error("There should be no error")
 	}
 
-	// iterate through all the solutions found
-	validWords, err := loadDictionary(dictionaryPath)
+	expectedWords := []string{
+		"SURGERY",
+		"SPARES",
+	}
+	longestWordLen, err := validateCorrectWordsFound(*w, solution, expectedWords)
 	if err != nil {
-		t.Fatalf("Load local dict failed with error %v", err)
+		t.Fatalf("Tests failed '%v'", err)
 	}
-
-	longestWordLen := 0
-	wordsFound := []string{}
-	for _, wordCells := range solution.Result {
-		if len(wordCells) > longestWordLen {
-			longestWordLen = len(wordCells)
-		}
-
-		word := w.WordFromCells(wordCells)
-		if _, ok := validWords[word]; !ok {
-			t.Errorf("Found word %v which is not in the dictionary", word)
-		}
-		wordsFound = append(wordsFound, word)
-	}
-
 	expectedLongestLen := 7
 	if longestWordLen != expectedLongestLen {
 		t.Errorf("The longest word found should be %v character long", longestWordLen)
-	}
-
-	idx := slices.IndexFunc(wordsFound, func(s string) bool { return s == "SURGERY" })
-	if idx == -1 {
-		t.Error("Word not found")
 	}
 }
 
@@ -105,6 +89,38 @@ func TestNoDuplicate(t *testing.T) {
 	}
 }
 
+var wg sync.WaitGroup
+var result1 []string
+var result2 []string
+
+func TestParallelSolve(t *testing.T) {
+	// create and solve the wordament
+	input1 := "SPAVURNYGERSMSBE"
+	input2 := "ZRFLPFUALINXAYEM"
+	size := 4
+	w := solver.NewWordament(size)
+	w.LoadDictionary(dictionaryPath)
+
+	results := make(chan solver.WordamentResult)
+	solveFunc := func(input string) {
+		solution, _ := w.Solve(input)
+		results <- solution
+	}
+
+	go solveFunc(input1)
+	go solveFunc(input2)
+
+	fmt.Println("Waiting for results")
+	results1 := <-results
+	results2 := <-results
+
+	// the results
+	fmt.Println("Result 1: !!!", getInputFromMatrix(results1.Input), results1)
+	fmt.Println("Result 2: !!!", getInputFromMatrix(results2.Input), results2)
+
+	// TODO: actually validate the results are not being mixed up (there is a bug and it is currently)
+}
+
 func loadDictionary(path string) (map[string]bool, error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -127,4 +143,48 @@ func loadDictionary(path string) (map[string]bool, error) {
 	}
 
 	return words, nil
+}
+
+func getInputFromMatrix(m [][]rune) string {
+	s := ""
+	for i, _ := range m {
+		for j, _ := range m[i] {
+			s = s + string(m[i][j])
+		}
+	}
+
+	return s
+}
+
+func validateCorrectWordsFound(w solver.Wordament, solution solver.WordamentResult, expectedWords []string) (int, error) {
+	// iterate through all the solutions found
+	validWords, err := loadDictionary(dictionaryPath)
+	if err != nil {
+		return 0, fmt.Errorf("Load local dict failed with error %v", err)
+	}
+
+	if len(solution.Result) < 50 {
+		return 0, fmt.Errorf("Too few words found")
+	}
+	longestWordLen := 0
+	wordsFound := map[string]bool{}
+	for _, wordCells := range solution.Result {
+		if len(wordCells) > longestWordLen {
+			longestWordLen = len(wordCells)
+		}
+
+		word := w.WordFromCells(wordCells)
+		if _, ok := validWords[word]; !ok {
+			return 0, fmt.Errorf("Found word %v which is not in the dictionary", word)
+		}
+		wordsFound[word] = true
+	}
+
+	for _, expectedWord := range expectedWords {
+		if _, ok := wordsFound[expectedWord]; !ok {
+			return 0, fmt.Errorf("Expected word %v not found", expectedWord)
+		}
+	}
+
+	return longestWordLen, nil
 }
