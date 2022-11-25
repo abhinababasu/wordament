@@ -20,6 +20,8 @@
                 $("#WordButton").click();
             }
         });
+
+
     };
 
     // Create the XHR object.
@@ -150,6 +152,7 @@
         $("#PromptDiv").empty();
         $("#InputMatrixDiv").empty();
         $("#ResultDiv").empty();
+        $("#AllResultsHeader").html("<h3>Fetching</h3>")
         $("#AllResultsDiv").empty();
 
         var url = 'http://commonvm1.westus2.cloudapp.azure.com:8090/?input=' + inputText;
@@ -173,10 +176,11 @@
             ShowCurrentResultMatrix()      
 
             // Show all the results 
-            $("#AllResultsDiv").append('<h1>All Results</h1>')
+            $("#AllResultsHeader").html('<h1>All Results ...</h1>');
+            $("#AllResultsDiv").hide();
             for (var ri = 0; ri < Results.length; ++ri) {
                 var resString = getResultString(res.Input, Results[ri])
-                $("#AllResultsDiv").append('<h3>' +  ri + '- ' + resString + '</h3>');
+                $("#AllResultsDiv").append('<h3>' +  (ri + 1) + '- ' + resString + '</h3>');
 
                 var resultTable = getResultsMatrix(res.Input, Results[ri])
                 $("#AllResultsDiv").append(resultTable)   
@@ -184,9 +188,7 @@
         };
         
         xhr.onerror = function(e) {
-            $("#AllResultsDiv").html('<h3>Woops, there was an error making the request</h3>');
-            console.log(e);
-        
+            $("#AllResultsHeader").html('<h3>Woops, there was an error making the request</h3>');
         };
 
         xhr.send();
@@ -246,6 +248,9 @@
         }
     }
 
+    function AllResultsToggle() {
+        $("#AllResultsDiv").toggle();
+    }
     
 </script>
 </head>
@@ -259,7 +264,10 @@
             <div id="PromptDiv">Try - SPAVURNYGERSMSBE</div>
         </div>
         <div id="ResultDiv" ></div>
-        <div id="AllResultsDiv"></div>
+        <div>
+            <div id="AllResultsHeader"  onclick="AllResultsToggle()"></div>
+            <div id="AllResultsDiv" ></div>
+        </div>
    </div>
  </body>
 </html>

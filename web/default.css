@@ -132,6 +132,15 @@ img.ImageElement
     padding: 15px;
 }
 
+
+#AllResultsHeader h1{
+    cursor: pointer;
+}
+
+#AllResultsHeader h3{
+    cursor: pointer;
+}
+
 #AllResultsDiv h3{
     text-align: center;
 }
