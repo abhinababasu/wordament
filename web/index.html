@@ -14,6 +14,12 @@
     // Add fully body arrow handler to shuffle through the results
     window.onload = function() {
         document.body.onkeydown = KeyDownHandler;
+
+        $("#WordBox").keyup(function(event) {
+            if (event.keyCode === 13) {
+                $("#WordButton").click();
+            }
+        });
     };
 
     // Create the XHR object.
