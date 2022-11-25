@@ -26,10 +26,12 @@ func main() {
 
 	tStart := time.Now()
 
-	w := solver.NewWordament(size)
-	w.LoadDictionary("../service/english0.dict")
-	w.LoadDictionary("../service/english2.dict")
+	solver.LoadDictionary("../service/english0.dict")
+	solver.LoadDictionary("../service/english2.dict")
+	tDict := time.Since(tStart)
 
+	tStart = time.Now()
+	w := solver.NewWordament(size)
 	solution, err := w.Solve(input)
 	if err != nil {
 		fmt.Printf("Error!! %v\n ", err)
@@ -58,11 +60,9 @@ func main() {
 		fmt.Println(s, wordCells)
 	}
 
-	tEnd2 := time.Since(tStart)
-
 	fmt.Println()
 	fmt.Printf("Total %v words found\n", len(solution.Result))
 	fmt.Printf("Longest word size is %v \n", longestWordLen)
-	fmt.Printf("Took %vms to compute and %vms with printing\n", tEnd1.Milliseconds(), tEnd2.Milliseconds())
+	fmt.Printf("Took %vms to load dictionaries, %vms to compute\n", tDict.Milliseconds(), tEnd1.Milliseconds())
 
 }

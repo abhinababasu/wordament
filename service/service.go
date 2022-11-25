@@ -16,19 +16,18 @@ const (
 	WordamentSize = 4 // number of rows or colms of the mordament
 )
 
-var wordament solver.Wordament
-
 func main() {
 	port := flag.Int("port", 8080, "Port server will listen on")
 	flag.Parse()
 
-	log.Println("Creating wordament solver")
-	wordament = *solver.NewWordament(WordamentSize)
-
-	log.Println("Loading dictionaries")
-
 	// load dictionaries
-	found := loadAllDictionaries(&wordament, "*.dict")
+	log.Println("Loading dictionaries")
+	timeStart := time.Now()
+	found := loadAllDictionaries("*.dict")
+	timeEnd := time.Since(timeStart)
+
+	log.Printf("Loaded all dictionaries in %vms", timeEnd.Milliseconds())
+
 	if found == 0 {
 		log.Fatal("No dictionaries were found")
 	}
@@ -57,6 +56,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println("Creating wordament solver")
+	wordament := *solver.NewWordament(WordamentSize)
 	result, err := wordament.Solve(input)
 	if err != nil {
 		log.Println("Solve error:", err)
@@ -74,7 +75,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Solved=%v;time=%vms;words=%v", input, timeEnd.Milliseconds(), len(result.Result))
 }
 
-func loadAllDictionaries(wordament *solver.Wordament, path string) int {
+func loadAllDictionaries(path string) int {
 	// load from current or the solver paths
 	found := 0
 	log.Println("Loading dictionary from", path)
@@ -83,7 +84,7 @@ func loadAllDictionaries(wordament *solver.Wordament, path string) int {
 	if err == nil {
 		for _, file := range files {
 			log.Println("Loading dictionary", file)
-			err := wordament.LoadDictionary(file)
+			err := solver.LoadDictionary(file)
 			if err != nil {
 				log.Fatal(err)
 			}

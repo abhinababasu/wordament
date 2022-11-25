@@ -17,8 +17,8 @@ func TestE2E(t *testing.T) {
 	// create and solve the wordament
 	input := "SPAVURNYGERSMSBE"
 	size := 4
+	solver.LoadDictionary(dictionaryPath)
 	w := solver.NewWordament(size)
-	w.LoadDictionary(dictionaryPath)
 
 	solution, err := w.Solve(input)
 
@@ -44,8 +44,8 @@ func TestBadInput(t *testing.T) {
 
 	size := 4
 
+	solver.LoadDictionary(dictionaryPath)
 	w := solver.NewWordament(size)
-	w.LoadDictionary(dictionaryPath)
 
 	input := "SPAVURN"
 	_, err := w.Solve(input)
@@ -64,8 +64,8 @@ func TestNoDuplicate(t *testing.T) {
 	input := "SPAVURNYGERSMSBE"
 	size := 4
 
+	solver.LoadDictionary(dictionaryPath)
 	w := solver.NewWordament(size)
-	w.LoadDictionary(dictionaryPath)
 
 	solution, err := w.Solve(input)
 
@@ -94,31 +94,60 @@ var result1 []string
 var result2 []string
 
 func TestParallelSolve(t *testing.T) {
-	// create and solve the wordament
+	// create  the wordament
 	input1 := "SPAVURNYGERSMSBE"
 	input2 := "ZRFLPFUALINXAYEM"
 	size := 4
-	w := solver.NewWordament(size)
-	w.LoadDictionary(dictionaryPath)
+	solver.LoadDictionary(dictionaryPath)
+	wordament1 := solver.NewWordament(size)
+	wordament2 := solver.NewWordament(size)
 
-	results := make(chan solver.WordamentResult)
-	solveFunc := func(input string) {
+	results := make(chan solver.WordamentResult, 2)
+	solveFunc := func(w *solver.Wordament, input string) {
 		solution, _ := w.Solve(input)
 		results <- solution
 	}
 
-	go solveFunc(input1)
-	go solveFunc(input2)
+	// TODO: solve in parallel
+	go solveFunc(wordament1, input1)
+	go solveFunc(wordament2, input2)
 
 	fmt.Println("Waiting for results")
 	results1 := <-results
 	results2 := <-results
 
-	// the results
-	fmt.Println("Result 1: !!!", getInputFromMatrix(results1.Input), results1)
-	fmt.Println("Result 2: !!!", getInputFromMatrix(results2.Input), results2)
+	resultString1 := getInputFromMatrix(results1.Input)
+	resultString2 := getInputFromMatrix(results2.Input)
 
-	// TODO: actually validate the results are not being mixed up (there is a bug and it is currently)
+	if strings.Compare(resultString1, resultString2) == 0 {
+		t.Errorf("Both results cannot have the same input %v", resultString1)
+		return
+	}
+
+	// results coulld've come in any order, so lets swap if necessary
+	if resultString1 != input1 {
+		resultString1, resultString2 = resultString2, resultString1
+		results1, results2 = results2, results1
+	}
+
+	expectedWords1 := []string{
+		"SURGERY",
+		"SPARES",
+	}
+	_, err1 := validateCorrectWordsFound(*wordament1, results1, expectedWords1)
+	if err1 != nil {
+		t.Errorf("Validation for %v failed with '%v", resultString1, err1)
+	}
+
+	expectedWords2 := []string{
+		"ALPINE",
+		"MENIAL",
+	}
+	_, err2 := validateCorrectWordsFound(*wordament2, results2, expectedWords2)
+	if err2 != nil {
+		t.Errorf("Validation for %v failed with '%v", resultString2, err2)
+	}
+
 }
 
 func loadDictionary(path string) (map[string]bool, error) {
@@ -163,9 +192,6 @@ func validateCorrectWordsFound(w solver.Wordament, solution solver.WordamentResu
 		return 0, fmt.Errorf("Load local dict failed with error %v", err)
 	}
 
-	if len(solution.Result) < 50 {
-		return 0, fmt.Errorf("Too few words found")
-	}
 	longestWordLen := 0
 	wordsFound := map[string]bool{}
 	for _, wordCells := range solution.Result {
@@ -174,9 +200,12 @@ func validateCorrectWordsFound(w solver.Wordament, solution solver.WordamentResu
 		}
 
 		word := w.WordFromCells(wordCells)
+
+		//fmt.Println("Found ", word)
 		if _, ok := validWords[word]; !ok {
 			return 0, fmt.Errorf("Found word %v which is not in the dictionary", word)
 		}
+
 		wordsFound[word] = true
 	}
 
@@ -184,6 +213,10 @@ func validateCorrectWordsFound(w solver.Wordament, solution solver.WordamentResu
 		if _, ok := wordsFound[expectedWord]; !ok {
 			return 0, fmt.Errorf("Expected word %v not found", expectedWord)
 		}
+	}
+
+	if len(solution.Result) < 30 {
+		return 0, fmt.Errorf("Too few (%v) words found", len(solution.Result))
 	}
 
 	return longestWordLen, nil

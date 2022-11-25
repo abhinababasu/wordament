@@ -8,30 +8,15 @@ import (
 	"strings"
 )
 
-type Wordament struct {
-	size int
-	trie *Trie
+var trie *Trie // Single instance of trie
 
-	// TODO: The following should go away to make solve calls thread safe
-	// also move those functions from class methods to ensure it is indeed
-	// not taking any reference from this struct
-	matrix [][]rune
-	result [][]Cell
-}
+// All dictionaries needs to be loaded at the start
+// Note that this is NOT thread-safe
+func LoadDictionary(path string) error {
+	if trie == nil {
+		trie = NewTrie()
+	}
 
-type WordamentResult struct {
-	Input  [][]rune
-	Result [][]Cell
-}
-
-func NewWordament(sz int) *Wordament {
-	w := Wordament{size: sz}
-	w.trie = NewTrie()
-
-	return &w
-}
-
-func (w *Wordament) LoadDictionary(path string) error {
 	file, err := os.Open(path)
 	if err != nil {
 		return err
@@ -44,7 +29,7 @@ func (w *Wordament) LoadDictionary(path string) error {
 		// remove '
 		var word string
 		word = strings.ReplaceAll(scanner.Text(), "'", "")
-		w.trie.AddWord(word)
+		trie.AddWord(word)
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -52,6 +37,28 @@ func (w *Wordament) LoadDictionary(path string) error {
 	}
 
 	return nil
+}
+
+type Wordament struct {
+	size int
+
+	matrix [][]rune
+	result [][]Cell
+}
+
+type WordamentResult struct {
+	Input  [][]rune
+	Result [][]Cell
+}
+
+func NewWordament(sz int) *Wordament {
+	// trie needs to be initialized before creating Wordament
+	if trie == nil {
+		return nil
+	}
+
+	w := Wordament{size: sz}
+	return &w
 }
 
 func (w *Wordament) Solve(s string) (WordamentResult, error) {
@@ -80,7 +87,7 @@ func (w *Wordament) SolveMatrix(matrix [][]rune) [][]Cell {
 	for r := 0; r < w.size; r++ {
 		for c := 0; c < w.size; c++ {
 			ch := w.matrix[r][c]
-			node := w.trie.root.GetChild(ch)
+			node := trie.root.GetChild(ch)
 
 			if node != nil {
 				w.solvePos(wordsFound, GetCell(r, c), node, cells)
