@@ -8,7 +8,7 @@ single page app that works off of the API  is in [web](./web).
 Wordament is a game where player gets a N x N Matrix and needs to find words by swipping through the matrix.
 This implementation only supports 4x4 matrix and only english alphabets.
 
-The application is currently hosted at http://bonggeek.com/wordament. 
+See it in action at http://bonggeek.com/wordament. 
 
 ![alt Screenshot](Screenshot_01.png)
 
@@ -23,7 +23,7 @@ M S B E
 Enter SPAVURNYGERSMSBE and hit enter. The solution is presented overlaid on the matrix. A valid word (e.g. Surgery) can be 
 found by swiping starting at the green cell and following the arrows till the Red cell.
 
-![alt Screenshot](Screenshot_02.png)
+![alt Screen capture](ScreenCapture.gif)
 
 Tapping/clicking on the image or using the arrow ← → keys, you can move to the next solution. The solutions are sorted
 from longers to shortest words, and duplicates (same word that can be found using different set of cells) are 
