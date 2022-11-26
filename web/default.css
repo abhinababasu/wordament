@@ -1,149 +1,14 @@
+/* ============================================================================
+ *  Common page
+ *  ============================================================================
+ */
 body
 {
     font-family: helvetica, Arial Black, Arial;
     font-size:10pt;
     background-color: #ffffff;
 }
-        
-#mainDiv
-{
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #ffffff;
-}
 
-#InputDiv
-{
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    justify-content: center;
-}
-
-#Header
-{
-    font-family: helvetica, Arial Black, Arial;
-    font-size: 20pt;
-}
-
-#Footer
-{
-    position:absolute;
-    bottom:0;
-    width:99%;
-    height:40px;   /* Height of the footer */
-    background-color: #DCDCDC;
-}
-
-#DescriptionText{
-    font-size: 14px;
-}
-
-#WordButton
-{
-    width: *;
-    font-size: 14px;
-    border-radius: 15px 30px;
-    background-color: #DCDCDC; 
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-}
-
-#WordButton:focus{
-    outline: none;
-}
-
-#WordBox
-{
-    width: 75%;
-    border: 5px solid white; 
-    -webkit-box-shadow: 
-      inset 0 0 8px  rgba(0,0,0,0.1),
-            0 0 16px rgba(0,0,0,0.1); 
-    -moz-box-shadow: 
-      inset 0 0 8px  rgba(0,0,0,0.1),
-            0 0 16px rgba(0,0,0,0.1); 
-    box-shadow: 
-      inset 0 0 8px  rgba(0,0,0,0.1),
-            0 0 16px rgba(0,0,0,0.1); 
-    padding: 15px;
-    background: rgba(255,255,255,0.5);
-    margin: 0 0 10px 0;
-    font-size: 20px;
-    text-transform: uppercase;
-}
-
-#WordBox:focus{
-    outline: none;
-}
-
-#BannerImg
-{
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-img.ImageElement
-{
-    width: 75px;
-    height: 75px;
-    margin: 5px;
-}
-
-#PromptDiv
-{
-    padding: 15px;
-    text-align: left;
-    padding: 20px;
-    color: gray;
-    font-size: 15px;
-}
-
-
-#InputMatrixDiv
-{
-    padding: 15px;
-}
-
-#ResultDiv
-{
-    padding: 15px;
-}
-
-#ResultDiv h3{
-    text-align: center;
-}
-
-
-#AllResultsDiv
-{
-    padding: 15px;
-}
-
-
-#AllResultsHeader h1{
-    cursor: pointer;
-}
-
-#AllResultsHeader h3{
-    cursor: pointer;
-}
-
-#AllResultsDiv h3{
-    text-align: center;
-}
 
 a:link
 {
@@ -175,7 +40,118 @@ h1.groupHeader
     font-size:14pt;
 }
 
+#mainDiv
+{
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff;
+}
 
+#Header
+{
+    font-family: helvetica, Arial Black, Arial;
+    font-size: 20pt;
+}
+
+#Footer
+{
+    position:absolute;
+    bottom:0;
+    width:99%;
+    height:40px;   /* Height of the footer */
+    background-color: #DCDCDC;
+}
+
+/* ============================================================================
+ * Banner image
+ * ============================================================================
+ */
+#BannerImg
+{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ============================================================================
+ * Input text box and button
+ * ============================================================================
+ */
+
+#InputDiv
+{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    justify-content: center;
+}
+
+#WordButton, #WordBox
+{
+    vertical-align: middle;
+
+    height: 40px;
+    font-size: 20px;
+    border: 1px solid black; 
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    
+    padding: 8px;
+    margin: 0 0 0 0;
+}
+
+#WordButton 
+{
+    width: 20%;
+    border-radius: 0px 5px 5px 0px;    
+
+    background-color: #CCCCCC; 
+    color: #606060;
+    
+    cursor: pointer;
+}
+
+#WordButton:focus{
+    outline: none;
+}
+#wordButton:hover 
+{
+    font-weight: bold;
+    color: black;
+}
+
+#WordBox
+{
+    width: 75%;
+
+    border-radius: 5px 0px 0px 5px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
+    padding: 10px;
+    
+    background-color: white; 
+    color:black;
+
+    text-transform: uppercase;
+}
+
+#WordBox:focus{
+    outline: none;
+}
+
+#PromptDiv
+{
+    padding: 15px;
+    text-align: left;
+    padding: 20px;
+    color: gray;
+    font-size: 15px;
+}
+
+/* ============================================================================
+ * Detailed results
+ * ============================================================================
+ */
 .MatrixResultTable{
     /*width:50%; */
     border-collapse:collapse; 
@@ -235,3 +211,37 @@ h1.groupHeader
 
     color: black;
 }
+
+/* ============================================================================
+ *  All Results 
+ * ============================================================================
+ */
+
+#ResultDiv
+{
+    padding: 15px;
+}
+
+#ResultDiv h3{
+    text-align: center;
+}
+
+#AllResultsDiv
+{
+    padding: 15px;
+}
+
+
+#AllResultsHeader h1{
+    cursor: pointer;
+}
+
+#AllResultsHeader h3{
+    cursor: pointer;
+}
+
+#AllResultsDiv h3{
+    text-align: center;
+}
+
+

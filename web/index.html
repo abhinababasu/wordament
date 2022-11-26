@@ -1,12 +1,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Word Element</title>
+<title>Wordament Solver</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="stylesheet" media="screen and (orientation:portrait)" type="text/css" href="small.css" />
-<link rel="stylesheet" media="screen and (min-width:200px) and (max-width: 799px)" type="text/css" href="small.css" />
-<link rel="stylesheet" media="screen and (min-width: 800px)" type="text/css" href="default.css" />
+<link rel="stylesheet" type="text/css" href="default.css" />
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">google.load("jquery", "1.6.0");</script>
 <script type="text/javascript">
@@ -150,7 +148,6 @@
         }
         
         $("#PromptDiv").empty();
-        $("#InputMatrixDiv").empty();
         $("#ResultDiv").empty();
         $("#AllResultsHeader").html("<h3>Fetching</h3>")
         $("#AllResultsDiv").empty();
@@ -259,8 +256,7 @@
     <div id="mainDiv">
         <img id="BannerImg" src="./banner.png" />
         <div id="InputDiv">
-            <input type="text" id="WordBox" placeholder="Type all 16 wordament letters"/>
-            <button id="WordButton" onclick="fetchElement()">Get Elements</button>
+            <input type="text" id="WordBox" placeholder="Type all 16 wordament letters"/><button id="WordButton" onclick="fetchElement()">Solve</button>
             <div id="PromptDiv">Try - SPAVURNYGERSMSBE</div>
         </div>
         <div id="ResultDiv" ></div>
