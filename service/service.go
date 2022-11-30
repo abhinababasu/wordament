@@ -43,7 +43,7 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	timeStart := time.Now()
-	log.Printf("Remote=%v;Request=%v %v,UA=%v", r.RemoteAddr, r.Method, r.URL.String(), r.UserAgent())
+	log.Printf("Remote=%v;RealIp=%v;Request=%v %v,UA=%v", r.RemoteAddr, getRealIP(r), r.Method, r.URL.String(), r.UserAgent())
 	query := r.URL.Query()
 
 	input := query.Get("input")
@@ -93,4 +93,15 @@ func loadAllDictionaries(path string) int {
 	}
 
 	return found
+}
+
+func getRealIP(r *http.Request) string {
+	IPAddress := r.Header.Get("X-Real-IP")
+	if IPAddress == "" {
+		IPAddress = r.Header.Get("X-Forwarder-For")
+	}
+	if IPAddress == "" {
+		IPAddress = r.RemoteAddr
+	}
+	return IPAddress
 }

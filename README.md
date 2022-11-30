@@ -86,7 +86,7 @@ ssh <user>@server -i MyKey.cer
 Then either run the deployment script
 ``` bash
 sudo bash
-curl -fsSL "https://raw.githubusercontent.com/abhinababasu/wordament/main/service/deploy.sh?token=GHSAT0AAAAAAB26S7FFQJA7APXSWXXJW7U6Y32Y2SA" | bash
+curl -fsSL "https://raw.githubusercontent.com/abhinababasu/wordament/main/service/deploy.sh" | bash
 ```
 
 Or manually
