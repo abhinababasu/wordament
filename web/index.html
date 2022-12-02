@@ -162,7 +162,7 @@
         $("#AllResultsHeader").html("<h3>Fetching</h3>")
         $("#AllResultsDiv").empty();
 
-        var url = 'http://commonvm1.westus2.cloudapp.azure.com:8090/?input=' + inputText;
+        var url = 'http://commonvm1.westus2.cloudapp.azure.com/wordament/?input=' + inputText;
         var xhr = createCORSRequest('GET', url);
         if (!xhr) {
             alert('CORS not supported');
